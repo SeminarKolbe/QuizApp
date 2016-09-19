@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package de.projekt.model;
+package de.projekt.model; //TEstttttt
 
 import java.sql.*;
 import java.util.ArrayList;
