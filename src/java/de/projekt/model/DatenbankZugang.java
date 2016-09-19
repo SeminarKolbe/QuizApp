@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package de.projekt.model; //TEstttttt
-
+//test3
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
