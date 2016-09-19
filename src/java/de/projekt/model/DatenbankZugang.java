@@ -61,6 +61,37 @@ public class DatenbankZugang {
     }
 //___________________________________________________________________________________
     
+    public String getString(String query){
+        String result = "";
+        try{
+            connect();
+            Statement stmt =con.createStatement();
+            ResultSet rs =stmt.executeQuery(query);
+            while(rs.next()){
+                result=rs.getString(1);
+            }
+            close();
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+        return result;
+    }
+    
+    public ArrayList<String> getStringList(String query){
+        ArrayList<String> result = new ArrayList<String>();
+        try{
+            connect();
+            Statement stmt =con.createStatement();
+            ResultSet rs =stmt.executeQuery(query);
+            while(rs.next()){
+                result.add(rs.getString(1));
+            }
+            close();
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+        return result;
+    }
     //Gibt eine String Liste mit allen Nutzern zurück
     public List<String> getUser() throws SQLException, ClassNotFoundException{
         List <String> name =new ArrayList<String>();
@@ -98,16 +129,16 @@ public class DatenbankZugang {
      return right;
     }
     // Gibt die Id eines User zurück. Der Username wird übergaben. Standermäßig wird -1 zurückgeliefert, falls der user nicht im System ist
-    public int getFirstInt(String query) throws SQLException{
-        int id=-1;
+    public int getInt(String query) throws SQLException{
+        int result = -1;
         connect();
         Statement stmt= con.createStatement();
         ResultSet rs = stmt.executeQuery(query);
         if(rs.next()){
-            id=rs.getInt(1);    
+            result = rs.getInt(1);    
         }
         close();
-        return id;
+        return result;
     }
     // Gibt eine Liste mit allen aktiven themen zurück
     public List<String> getThema() throws ClassNotFoundException, SQLException{
