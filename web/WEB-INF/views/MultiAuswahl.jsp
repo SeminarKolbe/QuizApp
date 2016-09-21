@@ -30,7 +30,7 @@
       <div data-role="content" style="margin:10px">
         
         <%
-            List<String> namen = (List<String>)request.getAttribute("name"); 
+            List<String> namen = (List<String>)request.getAttribute("gegnernamen"); 
             int i=1;
         %>
         <form action="VerarbeitungsControllerMulti" method="post">
@@ -49,6 +49,10 @@
                      <button>Zufälliger Spieler</button>
                     </form>
     </div>
+                    
+                    
+                    
+                    
         <div data-role="footer" data-theme="c" id="footer"><h1></h1></div>  
     </body>
 </html>

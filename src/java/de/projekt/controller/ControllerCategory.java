@@ -66,69 +66,24 @@ public class ControllerCategory extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        if(thema==null){
-    //______ Abgleich des Themas mit der Datenbank _______       
-            int categoryId;  // jeder Kategorie hat einen Wert / Vortlaufender Wert auf der Datenbank
-            String strCategoryParameter = request.getParameter("category");
-            try{
-                categoryId = Integer.parseInt(strCategoryParameter);
-                con = dbconnection.connect();
-                Statement stmt = con.createStatement();
-                ResultSet rs = stmt.executeQuery("SELECT * FROM thema WHERE idthema='"+categoryId+"';");
-                if(rs.next()){   
-                    thema=rs.getString("name");
-                }
-                con.close();
-            }catch (Exception e){
-                System.out.println(e);
-                forwardToErrorView(request, response, "Es wurde keine gültige Kategorie ausgewählt!" +e);
-                 /* Und den Controller verlassen! */
-                return;
-            }
-    //________________       
+        String kategoriename = request.getParameter("category");
+        request.setAttribute("category", thema);
+        request.getRequestDispatcher("VerarbeitungsControllerSingle").forward(request, response);
+        return;
+           
                     
-            HttpSession session = request.getSession();
-            System.out.println("ControllerCategory Session: " + session);
-            Multi ueberpruefen= new Multi((Player) session.getAttribute("player"));
-            System.out.println("ControllerCategory Player: " + (Player)session.getAttribute("player") + "\n" + "ueberpruefen: " + ueberpruefen);
+           
             
-        //______ Überprüft ob ein Gegner eine Anfrage gestellt hat ______    
-            try{
-                int[] anfrageid= ueberpruefen.checkAnfrage(); // Guckt ob für den Spieler Spielanfargen vorliegen
-                List <String> name =new ArrayList<String>();
-                for(int i=0;i<anfrageid.length;i++){
-                    name.add(ueberpruefen.getPlayer(anfrageid[i]));  // Sucht anhander der Game-Id eines Duell den Passenden Spieler und gibt diesen als String zurück
-                }
-                request.setAttribute("anfrageid", anfrageid);  //übergeben der einzelnen id's der Multiplayerspiele
-                request.setAttribute("anfrage", name); // übergibt einen Namen mit dem String des Gegners
-            }catch(Exception e){
-                System.out.println("ControllerCategory.java / Bin in der Exception, als ich probiert habe die Anfragen für die Multigames zu laden");
-                System.out.println(e);
-            }
-            
-        /*Wenn die Kategorie erfolgreich gewählt wurde
-         *Weiterleitung zur Wahl des Spielmodus*/
-            request.getRequestDispatcher("/WEB-INF/views/Spielmodiwahl.jsp").forward(request, response);
+        
         /*Wenn die Variable Thema nicht 0 ist, wurde schon eine Kategorie ausgewählt. Dann Soll noch bestimmt werden, ob es sich
             um einen Single- oder multi-player handelt.
        */
   // Sobald der Spieler weiter zur Spielmodiwahl geleitet wurde, ist das Thema festgelegt. Da der ControllerCategory auch desen Anfragen verarbeitet
   // wird er automatisch in die else geleitet
-            }else{
-            String playmode = request.getParameter("category");
-            //single-Player 
-            if("3".equals(playmode)){
-               request.setAttribute("uebergabe", thema);
-               request.getRequestDispatcher("VerarbeitungsControllerSingle").forward(request, response);
-               System.out.println("Hier bin ich im singleplayer-Modus.");
-               return;
-            }else if("2".equals(playmode) || "0".equals(playmode)){
-                request.getRequestDispatcher("VerarbeitungsControllerMulti").forward(request, response);
-                System.out.println("Hier bin ich im multiplayer-Modus.");
-                return;
-            }
-        }
-    }
+            
+           
+        
+    } /*
         
      
     @Override

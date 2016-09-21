@@ -66,7 +66,7 @@ public class VerarbeitungsControllerSingle extends HttpServlet implements Werte{
              HttpSession session = request.getSession();
              Player player=(Player) session.getAttribute("player");
              System.out.println("Player: " + player);
-             String thema = (String)request.getAttribute("uebergabe");
+             String thema = (String)request.getAttribute("category");
              System.out.println("Thema: " + thema);
              single = new Karteikarte(thema, player);
              setsize=single.getFrage();      // Erstellt das Fragen-set

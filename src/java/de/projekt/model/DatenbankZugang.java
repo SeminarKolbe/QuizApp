@@ -62,6 +62,9 @@ public class DatenbankZugang {
     }
 //___________________________________________________________________________________
     
+    /* Holt einen einzelnen String von der Datenbank
+    *
+    */
     public String getString(String query){
         String result = "";
         try{
@@ -77,7 +80,9 @@ public class DatenbankZugang {
         }
         return result;
     }
-    
+    /*
+    Holt eine Liste aus Strings von der Datenbank
+    */
     public ArrayList<String> getStringList(String query){
         ArrayList<String> result = new ArrayList<String>();
         try{
@@ -93,6 +98,51 @@ public class DatenbankZugang {
         }
         return result;
     }
+    /*
+    Holt einen einzelnen Intwert von der Datenbank
+    */
+     public int getInteger(String query){
+        int result = 0;
+        try{
+            connect();
+            Statement stmt =con.createStatement();
+            ResultSet rs =stmt.executeQuery(query);
+            while(rs.next()){
+                result=rs.getInt(1);
+            }
+            close();
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+        return result;
+    }
+    
+    /*
+    Holt eine Liste aus Strings von der Datenbank
+    */
+    public ArrayList<Integer> getIntegerList(String query){
+        ArrayList<Integer> result = new ArrayList<Integer>();
+        try{
+            connect();
+            Statement stmt =con.createStatement();
+            ResultSet rs =stmt.executeQuery(query);
+            while(rs.next()){
+                result.add(rs.getInt(1));
+            }
+            close();
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+        return result;
+    }
+    
+    
+  //_________________________________________________________________  
+    
+    
+    
+    
+    
     //Gibt eine String Liste mit allen Nutzern zurück
     public List<String> getUser() throws SQLException, ClassNotFoundException{
         List <String> name =new ArrayList<String>();

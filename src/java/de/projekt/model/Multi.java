@@ -43,7 +43,7 @@ public class Multi extends DatenbankZugang implements Werte{
                 allidnutzer++;
             }
             id=(int) (allidnutzer*Math.random());
-            while(id==0 || player.getId()==id){
+            while(id==0 || player.getUser_id()==id){
                id=(int) (allidnutzer*Math.random()); // Damit keiner gegen den Admin spielt 
             }
         }
@@ -76,7 +76,7 @@ public class Multi extends DatenbankZugang implements Werte{
 //__________________Einfügen der Daten in die Datenbank____________________
             
             Statement stmt= con.createStatement();
-            stmt.executeUpdate("INSERT INTO multi (player1, player2, cardset) VALUES("+player.getId()+","+id+",'"+set+"')");
+            stmt.executeUpdate("INSERT INTO multi (player1, player2, cardset) VALUES("+player.getUser_id()+","+id+",'"+set+"')");
  
             close();
 //_____ Ausgabe für den jetzigen Spieler_________________________
@@ -119,14 +119,19 @@ public class Multi extends DatenbankZugang implements Werte{
     public void insertErgebnis() throws ClassNotFoundException, SQLException{
         connect();
         Statement stmt= con.createStatement();
-        stmt.executeUpdate("INSERT INTO multi (gespielt1) VALUES("+player.getId()+")");            
+        stmt.executeUpdate("INSERT INTO multi (gespielt1) VALUES("+player.getUser_id()+")");            
        close();         
     }
     
     // gibt die Ganzen Anfragen für ein Multigame aus. Falls der Spieler im Multigame herausgefordert wurde
     // jede Anfrage hat eine eigene ID. Diese werden alle in einem int [] gespeichert
     public int [] checkAnfrage() throws ClassNotFoundException, SQLException{
-        connect();
+        ArrayList<Integer> idliste =getIntegerList("SELECT lla FROM multi WHERE player2="+player.getUser_id()+";");
+        int[] anfrageid=new int[idliste.size()];
+        for(int i =0;i<=idliste.size();i++){
+            anfrageid[i]=idliste.get(i);
+        }
+        /*
         Statement stmt= con.createStatement();
         ResultSet rs = stmt.executeQuery("SELECT lla FROM multi WHERE player2="+player.getId()+""); 
         System.out.println(rs);
@@ -134,14 +139,14 @@ public class Multi extends DatenbankZugang implements Werte{
         while(rs.next()){
             anfragen++;
         }
-        int[] anfrageid=new int[anfragen];
+       
         ResultSet rs2 = stmt.executeQuery("SELECT lla FROM multi WHERE player2="+player.getId()+"");
         int i=0;
         while(rs2.next()){
            anfrageid[i]=rs2.getInt("lla");
            i++;
         }
-        close();
+        close();*/
         return anfrageid;
     }
     

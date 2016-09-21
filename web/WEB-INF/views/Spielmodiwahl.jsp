@@ -26,7 +26,7 @@
             </div>
      <div data-role="content" align="center">
             <h2>Wähle deinen Spielmodus:</h2>
-            <%  List<String> anfrage =new ArrayList<String>();
+            <% /* List<String> anfrage =new ArrayList<String>();
                 int [] anfrageid= new int[100];
                
                 request.setAttribute("player",request.getParameter("player"));
@@ -40,16 +40,16 @@
                 }catch(Exception e){
                     System.out.println(e);
                 }    
-            
+            */
             %>
      </div>   
  <!-- Ausgabe der verschiedenen Spielmodien -->    
      <div align="center"> 
-            <a href="ControllerCategory?category=3"> 
+            <a href="SpielModusServlet?category=3"> 
                 <img src="Bilder/Einzelspieler.jpg" alt="Einzelspieler" width="50%" height="50%" name="Einzelspieler"/>
             </a>
             
-            <a href="ControllerCategory?category=2"> 
+            <a href="SpielModusServlet?category=2"> 
                 <img src="Bilder/Mehrspieler.png" alt="Mehrspieler" width="50%" height="50%" name="Mehrspieler"/>
                 </a>
             
@@ -65,27 +65,27 @@
 <!-- Guckt ob die Ergebnisse eines Multiplayergames sichtbar sind -->
         <div data-role="content" style="margin:10px">   
             <% // Guckt ob eine eine Anfrage vom gegner fertig ist und gibt das ergebniss aus, gleichzeitig wird die ANfrage gelöscht
-                out.println("<form action=\"ErgebnisController\" method=\"post\"><label>Spieler(in):</label><select name=\"endauswahl\"size=\"1\">");
+                /*out.println("<form action=\"ErgebnisController\" method=\"post\"><label>Spieler(in):</label><select name=\"endauswahl\"size=\"1\">");
                     for(int g=0;g<anfrageid.length;g++){
                     if(loeschen.getErgebnisAll(anfrageid[g],ueber.getName())){
                         out.println("<option value=\""+anfrageid[g]+"\">Ergebnis von Spiel: "+anfrageid[g]+" ansehen</option>");    
                     }    
                 }
                 out.println(" </select><button>Ergebnis checken</button></form>");
-            
+            */
             %>
             
             
             
             <%  // Guck ob ein Gegner eine Anfrage gesendet hat
-                if(anfrage.size()>0){
+                /*if(anfrage.size()>0){
                
                out.println("<form action=\"VerarbeitungsControllerMulti\" method=\"post\"><label>Spieler(in):</label><select name=\"top5\"size=\"1\">"); 
                for(int i=0;i<anfrage.size();i++){
                    out.println("<option value=\""+anfrageid[i]+"\">"+anfrage.get(i)+"</option>");
                } 
                out.println(" </select><button>Los geht's</button></form>");  
-            }%>
+            }*/%>
      </div>
             <div data-role="footer" data-theme="c" id="footer"><h1></h1></div>
         </div>

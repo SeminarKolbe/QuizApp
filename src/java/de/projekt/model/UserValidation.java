@@ -8,6 +8,8 @@ package de.projekt.model;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  *
@@ -27,13 +29,13 @@ public class UserValidation extends DatenbankZugang {
 
     // überprüft ob der User und Passwort in der Datenbank gespeichert sind
     public boolean isUserValid(String username, String password) throws ClassNotFoundException, SQLException{
-        connect();
-        Statement stmt= con.createStatement();
-        ResultSet rs = stmt.executeQuery("select * from benutzer");
-         
-        while(rs.next()){
-            
-            if(rs.getString(2).equals(username) && rs.getString(3).equals(password)){
+        String querynames = "select name from benutzer";
+        String querypasswords = "select passwort from benutzer";
+        ArrayList<String> users = getStringList(querynames);
+        ArrayList<String> passwords =getStringList(querypasswords);
+        
+        for(int i =0; i<users.size();i++){
+            if(users.get(i).equals(username) && passwords.get(i).equals(password)){
                 return true;   
             }   
         }            

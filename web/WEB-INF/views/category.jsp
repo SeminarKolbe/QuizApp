@@ -1,3 +1,4 @@
+<%@page import="de.projekt.model.Kategorie"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.sql.ResultSet"%>
@@ -19,36 +20,7 @@
     </head>
     <body>
         <div data-role="page">   
-            <%! public List<String> kategorie() {
-
-                    Connection con = null;
-                    DatenbankZugang dbconnection = new DatenbankZugang();
-
-                    List<String> help = new ArrayList<>();
-                    try {
-                        con = dbconnection.connect();
-                        Statement stmt = con.createStatement();
-                        ResultSet rs = stmt.executeQuery("SELECT * FROM thema;");
-                        while (rs.next()) {
-                            help.add("<a href=\"ControllerCategory?category=" + rs.getInt("idthema") + "\">" + rs.getString("name") + "</a>");
-                        }
-                        System.out.println(help);
-                        con.close();
-                    } catch (Exception e) {
-                        System.out.println(e);
-                        System.out.println("Bin in der Exception");
-                    }
-                    return help;
-                }
-            %>
-
-
- 
-
-
-
-            <% List<String> kategorie;
-            %>
+          
   <!-- HEADER-->
             <div data-role="header" data-theme="b" id="header">            
                 <form action="LoginControllerServlet" method="post" class="ui-btn-left">
@@ -74,9 +46,10 @@
                 <div id="kategorieauswahl" style="text-align: center;">
                     <ul data-role="listview" data-ajax="false" data-inset="true" data-theme="c">
                 <!-- KATEGORIEN WERDEN GELADEN -->    
-                      <% kategorie = kategorie(); 
-                        for (int i = 0; i < kategorie.size(); i++) {
-                            out.print("<li>"+kategorie.get(i)+"</li>");
+                      <% Kategorie kategorien =  new Kategorie(); 
+                         ArrayList<String> kategoriethemen= kategorien.getKategorie(); // Guck auf der Datenbank, welche Kategorien hinterlegt sind
+                         for(int i = 0; i < kategoriethemen.size(); i++) {
+                            out.print("<li><a href=\"ControllerCategory?category="+kategoriethemen.get(i)+"\">"+kategoriethemen.get(i)+"</a></li>");
                         }
                         %></ul> 
                 </div>

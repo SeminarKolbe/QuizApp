@@ -59,23 +59,25 @@ public class LoginControllerServlet extends HttpServlet {
         if(isUserValid) {
             sessio.setAttribute("userName", this.userName);
             sessio.setAttribute("password", this.password);
-            zugriff.close();
+            //zugriff.close();
             //________Login-Admin__________
              if(userName.equals("admin")){  
                     request.getRequestDispatcher("/WEB-INF/views/categoryAdmin.jsp").forward(request, response);
                     return;
              }else{
                     Player player = new Player(userName); // in Player-Klasse soll die UserId für den userName zurückgegeben werden
-                    player.getIdPlayer(userName);
+             
                     HttpSession session = request.getSession();
                     session.setAttribute("player", player); // und in der Session gespeichert werden
-                    request.getRequestDispatcher("/WEB-INF/views/category.jsp").forward(request, response);
+                    
+                    request.getRequestDispatcher("/WEB-INF/views/Spielmodiwahl.jsp").forward(request, response);
+                   // request.getRequestDispatcher("/WEB-INF/views/category.jsp").forward(request, response);
                     return;
             }
         //____ Falls User nicht bekannt______     
         }else{
            
-           zugriff.close();
+           
                 aufruf++; 
             //__ Beim ersten Aufruf der Seite soll keine Fehlermeldung ausgegeben werden, da der USer noch keine Daten eingegeben hat    
             if(aufruf==1){
