@@ -67,8 +67,7 @@ public class LoginControllerServlet extends HttpServlet {
              }else{
                     Player player = new Player(userName); // in Player-Klasse soll die UserId für den userName zurückgegeben werden
              
-                    HttpSession session = request.getSession();
-                    session.setAttribute("player", player); // und in der Session gespeichert werden
+                    sessio.setAttribute("player", player); // und in der Session gespeichert werden
                     
                     request.getRequestDispatcher("/WEB-INF/views/Spielmodiwahl.jsp").forward(request, response);
                    // request.getRequestDispatcher("/WEB-INF/views/category.jsp").forward(request, response);
@@ -76,8 +75,7 @@ public class LoginControllerServlet extends HttpServlet {
             }
         //____ Falls User nicht bekannt______     
         }else{
-           
-           
+            
                 aufruf++; 
             //__ Beim ersten Aufruf der Seite soll keine Fehlermeldung ausgegeben werden, da der USer noch keine Daten eingegeben hat    
             if(aufruf==1){

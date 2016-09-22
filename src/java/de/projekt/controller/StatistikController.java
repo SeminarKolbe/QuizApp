@@ -7,6 +7,7 @@ package de.projekt.controller;
 
 import de.projekt.model.DatenbankZugang;
 import de.projekt.model.Multi;
+import de.projekt.model.Player;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -43,12 +44,12 @@ public class StatistikController extends HttpServlet {
         HttpSession session = request.getSession();
         String username=(String) session.getAttribute("userName");
         DatenbankZugang db =new DatenbankZugang();
-        
-        int userid= db.getUserId(username);
+        Player player = new Player(username);
+        int userid= player.getIdPlayer();
         
         List <String> list= db.getThema();
         for(String thema : list){
-            int gespielt= db.getGespielteKarten(thema,userid);
+            int gespielt= player.getGespielteKarten(thema,userid);
             int richtig = db.getRichtigGespielteKarten(thema, userid);
             int falsch =db.getFalschGespielteKarten(thema, userid);
             double prozent=0;

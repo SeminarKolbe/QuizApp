@@ -52,10 +52,10 @@ public class Frage {
         this.answer3=antwort3;
         this.answer4=antwort4;
         this.answer5=antwort5;
-        this.correctanswer =correctanswer;
+        this.correctanswer = correctanswer;
     }
     
-     public Frage(int id, String thema,String frage, String antwort1,String antwort2,String antwort3,String antwort4,String antwort5, int correctanswer, int correctanswer2, int correctanswer3, int correctanswer4
+    public Frage(int id, String thema,String frage, String antwort1,String antwort2,String antwort3,String antwort4,String antwort5, int correctanswer, int correctanswer2, int correctanswer3, int correctanswer4
      ,int correctanswer5){
         this.id=id;
         this.thema=thema;

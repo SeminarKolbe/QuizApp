@@ -23,7 +23,7 @@
                     <button data-theme="a">Back</button>
                 </form>    
                 <h1>  L'Odyssee </h1>           
-                <form action="LogoutController" method=""post class="ui-btn-right">
+                <form action="LogoutController" method="post" class="ui-btn-right">
                     <button data-theme="a">Logout</button>
                 </form>     
             </div>
@@ -49,7 +49,7 @@
                 function right(){
                     var right =1;
                     
-                    resposne.setParameter("id", right);
+                    response.setParameter("id", right);
                     alert(right);
             }
             </script>

@@ -36,7 +36,7 @@ public class SpielModusServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       System.out.println("Bin im SpielModusServlet");
+        System.out.println("Bin im SpielModusServlet");
         String strCategoryParameter =request.getParameter("category");  // Jeder Spielmodus hat eine bestimmte Zahl
         System.out.println("Nummer der Kategorie: "+strCategoryParameter);
         if(strCategoryParameter.equals("3")){ // Falls der Spieler den Einzelmodus auswählt, wird er zu den Kategorien weitergeleitet
