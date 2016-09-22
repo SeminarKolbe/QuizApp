@@ -41,9 +41,10 @@
        <div data-role="content" style="margin:10px"> 
         <h2>Beantworte folgende Frage:</h2>
         <p align="center">
-          <b>
+            <img src="Bilder/kartei.JPG">
+            <b>
             <%out.println(question);%>
-          </b>
+             </b>
             <script>
                 function right(){
                     var right =1;
