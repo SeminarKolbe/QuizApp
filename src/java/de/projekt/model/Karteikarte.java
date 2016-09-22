@@ -54,9 +54,9 @@ public class Karteikarte extends DatenbankZugang implements Werte {
             while(rs.next()){
                 maxfragen++;  // überprüft wie viele Fragen überhaupt zu dem Thema vorhanden sind
             }
-             ResultSet rk = stmt.executeQuery("SELECT * FROM karten;");
-             while(rk.next()){
-                 allefragen++;
+            ResultSet rk = stmt.executeQuery("SELECT id_karte FROM karten;"); //SQL-Befehl mit Count könnte man hier einbringen
+            while(rk.next()){
+                allefragen++;
             }
             
             for(int i=0;i<fragenanzahl && i<maxfragen ;i++){
@@ -65,26 +65,23 @@ public class Karteikarte extends DatenbankZugang implements Werte {
                   Iterator schwer = wrongset.iterator();
                   
                     for(int j=0;j<schwerefragen && schwer.hasNext();j++){
-                            playset.add(wrongset.get(j)); // Fügt die Frage und Antwort dem Set an Fragen hinzu, die dem Nutzer ausgegeben werden
-                             i++;                                                                // i ist die gesamtzahl an karten und muss, dadurch das eine schwere Karte hinzukommt, erhöt werden
+                        playset.add(wrongset.get(j)); // Fügt die Frage und Antwort dem Set an Fragen hinzu, die dem Nutzer ausgegeben werden
+                         i++;                                                                // i ist die gesamtzahl an karten und muss, dadurch das eine schwere Karte hinzukommt, erhöt werden
                     }     
                 }
             //_________Es wird anhand der iD überprüft, ob die Karte schon im Set enthalten ist ____________________________________
                
                 int  randomid =(int) (allefragen*Math.random());    // randomid gibt eine zuffällige Id einer Karte an. 
-              Iterator w = playset.iterator();
+                Iterator w = playset.iterator();
          //while(w.hasNext())
                 
                 while(onSet(randomid) || randomid==0 || onThema(randomid)){
                     randomid =(int) (allefragen*Math.random());
-                    
                 }
-                Statement stmt1= con.createStatement();
-                ResultSet rf = stmt.executeQuery("SELECT * FROM karten WHERE thema = '"+thema+"' AND id_karte = '"+randomid+"';");  
-            if(rf.next()){
-                
-                this.playset.add(new Frage(rf.getInt(1),thema,rf.getString(3),rf.getString(4),rf.getString(5),rf.getString(6),rf.getString(7),rf.getString(8),rf.getInt(9)));
-               }
+                ResultSet rf = stmt.executeQuery("SELECT id_karte, frage, antwort1, antwort2, antwort3, antwort4, antwort5, richtigeAntwort FROM karten WHERE thema = '"+thema+"' AND id_karte = "+randomid+";");  
+                if(rf.next()){
+                    this.playset.add(new Frage(rf.getInt(1),thema,rf.getString(2),rf.getString(3),rf.getString(4),rf.getString(5),rf.getString(6),rf.getString(7),rf.getInt(8)));
+                }
             
             }
          Iterator i = playset.iterator();
@@ -139,28 +136,27 @@ public class Karteikarte extends DatenbankZugang implements Werte {
         }
         
        
-          public List<Frage> getDifficult(String thema) throws ClassNotFoundException, SQLException {     
+        public List<Frage> getDifficult(String thema) throws ClassNotFoundException, SQLException {     
             Statement stmt2= con.createStatement();
-            Statement stmt1= con.createStatement(); 
             Statement stmt3= con.createStatement(); 
             List<Frage> set =new ArrayList<Frage>();
             ResultSet rf = stmt2.executeQuery("SELECT * FROM relation_beutzer_karten WHERE thema = '"+thema+"' AND id_benutzer = '"+player.getUser_id()+"';");
              //_------------------------------------________________
-            
+
             while(rf.next()){
-            
+
                 // Suche die Fragen, welche zu dem thema und welche die Karten-id des rs Resultset haben(Relation zum benutzer)
                  ResultSet rw = stmt3.executeQuery("SELECT * FROM karten WHERE thema = '"+thema+"' AND id_karte = '"+rf.getInt(2)+"';");
-                
+
                  if(rw.next()){
-                   
+
                     set.add(new Frage(rf.getInt(2),thema,rw.getString(3),rw.getString(4),rw.getString(5),rw.getString(6),rw.getString(7),rw.getString(8),rw.getInt(9),rf.getInt(5),rf.getInt(4),rf.getInt(3)));
-                    
+
                  }   
             }
-            
+
             //___________________________________________________________________________
-       
+
             for(int i=0;i<set.size();i++){   // Liste wird sortiert   
                 for(int j=i+1;j<set.size();j++){ 
                   Frage help1= (Frage) set.get(i);    
@@ -171,7 +167,7 @@ public class Karteikarte extends DatenbankZugang implements Werte {
                         set.set(i,help2);
                         set.set(j,help1);    
                     }
-                   
+
                 }  
             }
           

@@ -179,24 +179,13 @@ public class DatenbankZugang {
          close();
      return right;
     }
-    // Gibt die Id eines User zurück. Der Username wird übergaben. Standermäßig wird -1 zurückgeliefert, falls der user nicht im System ist
-    public int getInt(String query) throws SQLException{
-        int result = -1;
-        connect();
-        Statement stmt= con.createStatement();
-        ResultSet rs = stmt.executeQuery(query);
-        if(rs.next()){
-            result = rs.getInt(1);    
-        }
-        close();
-        return result;
-    }
+
     // Gibt eine Liste mit allen aktiven themen zurück
     public List<String> getThema() throws ClassNotFoundException, SQLException{
         List<String> list = new ArrayList<String>();
         connect();
         Statement stmt = con.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT * FROM thema WHERE aktiv = '1';");
+        ResultSet rs = stmt.executeQuery("SELECT * FROM thema;");
         while (rs.next()) {
             list.add(rs.getString("name"));
         
