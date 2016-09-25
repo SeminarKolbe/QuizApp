@@ -47,7 +47,7 @@ public class StatistikController extends HttpServlet {
         Player player = new Player(username);
         int userid= player.getIdPlayer();
         
-        List <String> list= db.getThema();
+        List <String> list= db.getThemaAll();
         for(String thema : list){
             int gespielt= player.getGespielteKarten(thema,userid);
             int richtig = db.getRichtigGespielteKarten(thema, userid);

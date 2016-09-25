@@ -48,7 +48,7 @@ public class VerarbeitungsControllerSingle extends HttpServlet implements Werte{
              String thema = request.getParameter("category");
              System.out.println("Thema: " + thema);
              single = new Karteikarte(thema, player);
-             setsize=single.getFrage();      // Erstellt das Fragen-set
+             setsize = single.getPlaysetSize();      // Erstellt das Fragen-set
              System.out.println("VerarbeitungsControllerSingle setsize: " + setsize);
         }
 
@@ -78,7 +78,7 @@ public class VerarbeitungsControllerSingle extends HttpServlet implements Werte{
 
         //Gibt die jeweilige Frage aus
         String question= single.getQuestion(count);
-        String answer= single.getAnswer(count);
+        String answer= single.getCorrectAnswer(count);
         System.out.println("VerarbeitungsControllerSingle count: " + count + "\nVerarbeitungsControllerSingle question: " + question + "\nVerarbeitungsCongrollerSingle answer: " + answer);
         count++;
         request.setAttribute("answer",answer);

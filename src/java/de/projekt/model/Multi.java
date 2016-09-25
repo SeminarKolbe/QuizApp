@@ -386,12 +386,8 @@ public class Multi extends DatenbankZugang implements Werte{
     }
     
     public void deletDb(int idgame) throws ClassNotFoundException, SQLException{
-        connect();
-            System.out.println("Multi.java / deletDb");
-            Statement stmt1= con.createStatement();
-            stmt1.executeUpdate("DELETE FROM multi WHERE lla ="+idgame+";");
-            System.out.println("Hat geklappt ???????");
-            close();
+        String query = "DELETE FROM multi WHERE lla =" + idgame + ";";
+        insertQuery(query);
     }
     
 }

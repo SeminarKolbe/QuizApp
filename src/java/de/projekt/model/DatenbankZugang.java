@@ -3,9 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package de.projekt.model; //TEstttttt
-//test3
-//test4
+package de.projekt.model; 
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -71,8 +70,8 @@ public class DatenbankZugang {
             connect();
             Statement stmt =con.createStatement();
             ResultSet rs =stmt.executeQuery(query);
-            while(rs.next()){
-                result=rs.getString(1);
+            if(rs.next()) {
+                result = rs.getString(1);
             }
             close();
         }catch(Exception e){
@@ -107,8 +106,8 @@ public class DatenbankZugang {
             connect();
             Statement stmt =con.createStatement();
             ResultSet rs =stmt.executeQuery(query);
-            while(rs.next()){
-                result=rs.getInt(1);
+            if(rs.next()) {
+                result = rs.getInt(1);
             }
             close();
         }catch(Exception e){
@@ -136,7 +135,28 @@ public class DatenbankZugang {
         return result;
     }
     
+    //für insert- UND update- UND delete-SQL-Befehle
+    public void insertQuery(String query) {
+        try {
+            connect();
+            Statement stmt = con.createStatement();
+            stmt.executeUpdate(query);
+            close();
+        } catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
     
+    /*public Frage selectFrage(String query) {
+        try{
+            connect();
+            Statement stmt = con.createStatement();
+            stmt.executeQuery(query);
+            
+        } catch(Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }*/
   //_________________________________________________________________  
     
     
@@ -160,7 +180,7 @@ public class DatenbankZugang {
         int all=0;
         connect();
         Statement stmt= con.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT gespielt FROM relation_beutzer_karten WHERE thema='"+thema+"' AND id_benutzer='"+id+"';");
+        ResultSet rs = stmt.executeQuery("SELECT gespielt FROM relation_benutzer_karten WHERE thema='"+thema+"' AND id_benutzer='"+id+"';");
         while(rs.next()){
             all=all+rs.getInt("gespielt");    
         }
@@ -172,7 +192,7 @@ public class DatenbankZugang {
         int right=0;
         connect();
         Statement stmt= con.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT richtig FROM relation_beutzer_karten WHERE thema='"+thema+"'AND id_benutzer='"+id+"';");
+        ResultSet rs = stmt.executeQuery("SELECT richtig FROM relation_benutzer_karten WHERE thema='"+thema+"'AND id_benutzer='"+id+"';");
         while(rs.next()){
             right=right+rs.getInt("richtig");    
         }
@@ -181,11 +201,11 @@ public class DatenbankZugang {
     }
 
     // Gibt eine Liste mit allen aktiven themen zurück
-    public List<String> getThema() throws ClassNotFoundException, SQLException{
+    public List<String> getThemaAll() throws ClassNotFoundException, SQLException{
         List<String> list = new ArrayList<String>();
         connect();
         Statement stmt = con.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT * FROM thema;");
+        ResultSet rs = stmt.executeQuery("SELECT name FROM thema;");
         while (rs.next()) {
             list.add(rs.getString("name"));
         
@@ -199,7 +219,7 @@ public class DatenbankZugang {
         int falsch =0;
         connect();
         Statement stmt= con.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT falsch FROM relation_beutzer_karten WHERE thema='"+thema+"'AND id_benutzer='"+id+"';");
+        ResultSet rs = stmt.executeQuery("SELECT falsch FROM relation_benutzer_karten WHERE thema='"+thema+"'AND id_benutzer='"+id+"';");
         while(rs.next()){
             falsch=falsch+rs.getInt("falsch");    
         }

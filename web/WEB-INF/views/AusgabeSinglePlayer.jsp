@@ -41,7 +41,7 @@
        <div data-role="content" style="margin:10px"> 
         <h2>Beantworte folgende Frage:</h2>
         <p align="center">
-            <img src="Bilder/kartei.JPG">
+            <img src="Bilder/kartei.jpg">
             <b>
             <%out.println(question);%>
              </b>

@@ -28,47 +28,44 @@
          String res="0";
          int gesamteantworten=5;
          
-         String namegegner = (String)request.getAttribute("namegegner");
-         String frage = (String)request.getAttribute("frage");
-         String antwor1 = (String)request.getAttribute("antwor1");
-         String antwor2 = (String)request.getAttribute("antwor2");
-         String antwor3 = (String)request.getAttribute("antwor3");
-         String antwor4 = (String)request.getAttribute("antwor4");
-         String antwor5 = (String)request.getAttribute("antwor5");
-         String checkanswer= (String)request.getAttribute("checkanswer");
+         String namegegner = request.getAttribute("namegegner").toString();
+         String frage = request.getAttribute("frage").toString();
+         String antwort1 = request.getAttribute("antwort1").toString();
+         String antwort2 = request.getAttribute("antwort2").toString();
+         String antwort3 = request.getAttribute("antwort3").toString();
+         String antwort4 = request.getAttribute("antwort4").toString();
+         String antwort5 = request.getAttribute("antwort5").toString();
+         String checkanswer = request.getAttribute("checkanswer").toString();
          
         
          if(checkanswer.equals("0"))
             res="1";
          
          
-         String correct1 = (String)request.getAttribute("correct1");
-         String correct2 = (String)request.getAttribute("correct2");
+         String correct1 = request.getAttribute("correct1").toString();
+         String correct2 = request.getAttribute("correct2").toString();
         
-         String correct3 = (String)request.getAttribute("correct3");
-         String correct4 = (String)request.getAttribute("correct4");
-         String correct5 = (String)request.getAttribute("correct5");
+         String correct3 = request.getAttribute("correct3").toString();
+         String correct4 = request.getAttribute("correct4").toString();
+         String correct5 = request.getAttribute("correct5").toString();
         //______________Zum Häckchen setzen in den alten kästchen____________
-          String abgegeben = (String) request.getAttribute("abgegeben");
+        String abgegeben = request.getAttribute("abgegeben").toString();
           
           
           
-          if(antwor5.equals("")){
+          if(antwort5.equals("")){
               gesamteantworten--;    
           }
           if(abgegeben!=null){
                     
-                    AntwortenUebergabe help =(AntwortenUebergabe) request.getAttribute("santworten");
-                 if(antwor5.equals("")){
-                     lantwort = false;
-                 }
-                 santworten = help.getSantworten();
+                AntwortenUebergabe help =(AntwortenUebergabe) request.getAttribute("santworten");
+                if(antwort5.equals("")){
+                    lantwort = false;
+                }
+                santworten = help.getSantworten();
                  
                  
           }
-          
-          
-          
          //String user1 = (String)request.getAttribute("user1");
          //String user2 = (String)request.getAttribute("user2");
          //String user3 = (String)request.getAttribute("user3");
@@ -85,7 +82,7 @@
                      return true;
                     }
             }
-      return false;
+            return false;
         }       
         
         //Gibt einen Hacken zurückfalls die richtige Antwort angekreuz wurde, oder keine falsche antwort. Sonst wird ein Kreuz ausgegeben
@@ -116,30 +113,24 @@
       
        
         <form action="VerarbeitungsControllerMulti?res=<%out.print(res);%>" method="post">
-            <fieldset data-role="controlgroup"  data-theme="a">
+            <fieldset data-role="controlgroup" data-theme="a">
                 <label>
-                <input name="antwort" type="Checkbox" value="a1"<%if(abgegeben!=null &&answerCheck(santworten,1))out.println("checked=\"checked\"");%>><%out.println(antwor1);%> <% if(checkanswer.equals("1"))out.println(correct(1,correct1,santworten));%> 
+                <input name="antwort" type="Checkbox" value="a1"<%if(abgegeben!=null &&answerCheck(santworten,1))out.println("checked=\"checked\"");
+                out.println(antwort1);
+                if(checkanswer.equals("1"))out.println(correct(1,correct1,santworten));%> 
                 </label><br>
                 
-                <input name="antwort" type="Checkbox" value="a2"<%if(abgegeben!=null &&answerCheck(santworten,2))out.println("checked=\"checked\"");%>><%out.println(antwor2);%><% if(checkanswer.equals("1"))out.println(correct(2,correct2,santworten));%> <br>
-        <input name="antwort" type="Checkbox" value="a3"<%if(abgegeben!=null &&answerCheck(santworten,3))out.println("checked=\"checked\"");%>><%out.println(antwor3);%><% if(checkanswer.equals("1"))out.println(correct(3,correct3,santworten));%><br>
-        <input name="antwort" type="Checkbox" value="a4"<%if(abgegeben!=null &&answerCheck(santworten,4))out.println("checked=\"checked\"");%>><%out.println(antwor4);%><% if(checkanswer.equals("1"))out.println(correct(4,correct4,santworten));%><br>
+                <input name="antwort" type="Checkbox" value="a2"<%if(abgegeben!=null &&answerCheck(santworten,2))out.println("checked=\"checked\"");%>><%out.println(antwort2);%><% if(checkanswer.equals("1"))out.println(correct(2,correct2,santworten));%> <br>
+                <input name="antwort" type="Checkbox" value="a3"<%if(abgegeben!=null &&answerCheck(santworten,3))out.println("checked=\"checked\"");%>><%out.println(antwort3);%><% if(checkanswer.equals("1"))out.println(correct(3,correct3,santworten));%><br>
+                <input name="antwort" type="Checkbox" value="a4"<%if(abgegeben!=null &&answerCheck(santworten,4))out.println("checked=\"checked\"");%>><%out.println(antwort4);%><% if(checkanswer.equals("1"))out.println(correct(4,correct4,santworten));%><br>
+                <input name="antwort" type="Checkbox" value="a5"<%if(abgegeben!=null &&answerCheck(santworten,5))out.println("checked=\"checked\"");%>><%out.println(antwort5);%><% if(checkanswer.equals("1"))out.println(correct(5,correct5,santworten));%><br>
         
-        <!-- To-do : antwor5.equals("") um alle Fragen, falls es zum beispiel keine 4 Fragen hab-->
-        <!-- To-do 2 : Leere Frage auf der DatenBank löschen/ sonst gibt es manchmal einen Fehler-->
-        <!-- To-do 3 : Zurückbutton und Log-out-->
-        <!-- To-do 4 : Einzelspielermodus, die Antwort wird nicht angezeigt-->
-        <!-- To-do 5 : Backend Button zum hochladen von Datein-->
-        <!-- To-do 6 : Mehrspielermodus und Ranking fertig-->
-        <!-- To-do 7 : Designe-->
-        <!--____________Nice to have_____________-->
-        <!-- To-do 1 : Kategorien nach Stadt ordnen-->
-        
-         <% if(!antwor5.equals("")){
-            out.println("<input name=\"antwort\" type=\"Checkbox\" value=\"a5\">"+antwor5); 
+        <% /* if(!antwort5.equals("")){
+            out.println("<input name=\"antwort\" type=\"Checkbox\" value=\"a5\">"+antwort5); 
             if(checkanswer.equals("1"+ ""))
                 out.println(correct(5,correct5, santworten));
             }
+            */
          %>
             </fieldset>
         </p>
@@ -148,9 +139,6 @@
             
         </form>
     </div>          
-          
-      
-      
         <div data-role="footer" data-theme="c" id="footer"><h1></h1></div>
        
     </body>

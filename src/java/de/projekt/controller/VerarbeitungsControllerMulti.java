@@ -58,24 +58,20 @@ public static int spielerzug=0; // Wenn spielerzug 1 ist, ist der zweite Spieler
       
    //___________Anfrage eines anderen Spielers verarebeiten     
         try{
-         String [] help =request.getParameterValues("top5");
-         String anfrage=help[0];  // ist die Id des Cardsets welches gepielt wird
-         cardsetid=Integer.parseInt(anfrage);
-         
-         for(int w=0;w<help.length;w++){
-            
-         }
-          Multi g =new Multi((Player) session.getAttribute("player"));
-          namegegner = g.getNamePlayer1(cardsetid);
-          numbercards=g.getCardSet(anfrage);    // gibt einen int-Array mit den Karten-ids aus
-          MultiPlayerKarten mult =new MultiPlayerKarten();
-          set=mult.generateGame(numbercards); // erzeugt ein Set aus Fragen
-          spielerzug=1;
-          i=2;
+             String [] help = request.getParameterValues("top5");
+             String anfrage = help[0];  // ist die Id des Cardsets welches gepielt wird
+             cardsetid = Integer.parseInt(anfrage);
+
+              Multi g = new Multi((Player) session.getAttribute("player"));
+              namegegner = g.getNamePlayer1(cardsetid);
+              numbercards=g.getCardSet(anfrage);    // gibt einen int-Array mit den Karten-ids aus
+              MultiPlayerKarten mult =new MultiPlayerKarten();
+              set=mult.generateGame(numbercards); // erzeugt ein Set aus Fragen
+              spielerzug=1;
+              i=2;
            
        }catch(Exception e){
-      
-           System.out.println(e);
+           System.out.println(e.getMessage());
        } 
         
         
@@ -128,16 +124,37 @@ public static int spielerzug=0; // Wenn spielerzug 1 ist, ist der zweite Spieler
                 request.setAttribute("antwor3", frage.getAnswer3());
                 request.setAttribute("antwor4", frage.getAnswer4());
                 request.setAttribute("antwor5", frage.getAnswer5());
-                request.setAttribute("correct1", Integer.toString(frage.getCorrectanswer()));
+                //request.setAttribute("correctanswer", frage.getCorrectAnswer());
+                request.setAttribute("correct1", Integer.toString(frage.getCorrectanswer1()));
                 request.setAttribute("correct2", Integer.toString(frage.getCorrectanswer2()));
                 request.setAttribute("correct3", Integer.toString(frage.getCorrectanswer3()));
                 request.setAttribute("correct4", Integer.toString(frage.getCorrectanswer4()));
                 request.setAttribute("correct5", Integer.toString(frage.getCorrectanswer5()));
+               
                 int f;
                 int [] santworten =new int[userantworten.length];  // Die Antworten die der Nutzer gegeben hat, werden Sortiert und ausgegeben
                
                 // Es wird geguckt, ob alle angekreutzen Kästchen richtig sind und speichert die Ergebnisse für das Endresult
                 for(f=0;f<userantworten.length;f++){
+                    
+                    switch(userantworten[f]){
+                        case "a1": 
+                            santworten[f] = 1;
+                            break;
+                        case "a2": 
+                            santworten[f] = 2;
+                            break;
+                        case "a3": 
+                            santworten[f] = 3;
+                            break;
+                        case "a4": 
+                            santworten[f] = 4;
+                            break;
+                        case "a5": 
+                            santworten[f] = 5;
+                            break;
+                    }
+                    /*
                     if(userantworten[f].equals("a1")){
                         santworten[f]=1;
                     }if(userantworten[f].equals("a2")){
@@ -148,9 +165,10 @@ public static int spielerzug=0; // Wenn spielerzug 1 ist, ist der zweite Spieler
                         santworten[f]=4;
                     }if(userantworten[f].equals("a5")){
                         santworten[f]=5;
-                    }
+                    }*/
                 }
-                ResultBerechnenMulti result = new ResultBerechnenMulti(santworten, frage.getCorrectanswer(), frage.getCorrectanswer2(), frage.getCorrectanswer3(), frage.getCorrectanswer4(), frage.getCorrectanswer5());
+                //ResultBerechnenMulti result = new ResultBerechnenMulti(santworten, frage.getCorrectAnswer());
+                ResultBerechnenMulti result = new ResultBerechnenMulti(santworten, frage.getCorrectanswer1(), frage.getCorrectanswer2(), frage.getCorrectanswer3(), frage.getCorrectanswer4(), frage.getCorrectanswer5());
                 if(result.WrongRight()==true){
                     right++;      
                 }else{
@@ -198,11 +216,11 @@ public static int spielerzug=0; // Wenn spielerzug 1 ist, ist der zweite Spieler
          
             request.setAttribute("namegegner", namegegner);
             request.setAttribute("frage",frage.getQuestion());
-            request.setAttribute("antwor1", frage.getAnswer1());
-            request.setAttribute("antwor2", frage.getAnswer2());
-            request.setAttribute("antwor3", frage.getAnswer3());
-            request.setAttribute("antwor4", frage.getAnswer4());
-            request.setAttribute("antwor5", frage.getAnswer5());
+            request.setAttribute("antwort1", frage.getAnswer1());
+            request.setAttribute("antwort2", frage.getAnswer2());
+            request.setAttribute("antwort3", frage.getAnswer3());
+            request.setAttribute("antwort4", frage.getAnswer4());
+            request.setAttribute("antwort5", frage.getAnswer5());
             request.setAttribute("checkanswer", "0");  
           
             if(!answercheck.equals("1")){
@@ -215,18 +233,7 @@ public static int spielerzug=0; // Wenn spielerzug 1 ist, ist der zweite Spieler
             }catch(Exception e){
                 System.out.println(e);
             }   
-             
-           
-        
     }
-
-   
-        
-     
-    
-    
-    
-   
     
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

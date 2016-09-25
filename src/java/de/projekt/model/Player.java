@@ -15,6 +15,7 @@ import java.util.List;
  *
  * @author Jonas
  */
+
 public class Player extends DatenbankZugang {
     private String name = null;
     private int user_id;
@@ -32,8 +33,7 @@ public class Player extends DatenbankZugang {
         this.user_id = getIdPlayer(); 
         this.points = getPoints();
     }
-    
-    
+
     public Player(String name, int points) throws ClassNotFoundException, SQLException{
         this.name=name;
         this.points=points;
@@ -44,18 +44,16 @@ public class Player extends DatenbankZugang {
         return name;
     }
     
-      public int getUser_id(){
+    public int getUser_id(){
         return user_id;
     } 
     
-      
-      
     public List<ResultSet> getDifficult(String thema) throws ClassNotFoundException, SQLException {
         connect();     
         Statement stmt= con.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT id-karte,gespielt, richtig,falsch FROM relation_beutzer_karten WHERE thema = '"+thema+"' AND id_benutzer = '"+user_id+"'");
+        ResultSet rs = stmt.executeQuery("SELECT id_karte,gespielt, richtig,falsch FROM relation_benutzer_karten WHERE thema = '"+thema+"' AND id_benutzer = '"+user_id+"'");
         while(rs.next()){
-             set.add(rs);     // Jedes Resultset enthält einen Zeile der Tabelle relation_beutzer_karten
+             set.add(rs);     // Jedes Resultset enthält einen Zeile der Tabelle relation_benutzer_karten
                               // Diese werden nun an eine Liste angehängt  
         }
         for(int i=0;i<set.size();i++){                     // Liste wird sortiert   
@@ -83,11 +81,21 @@ public class Player extends DatenbankZugang {
     //Gibt eine Liste mit den Namen der Gegner zurück
        
     public ArrayList<String> getOpponentsNames(){
-     String query = "SELECT name FROM benutzer WHERE name <>'"+name+"';";
-     ArrayList<String> opponentsnames = getStringList(query);
-     return opponentsnames;
+        String query = "SELECT name FROM benutzer WHERE name <>'"+name+"';";
+        ArrayList<String> opponentsnames = getStringList(query);
+        return opponentsnames;
     } 
-        
+    
+        //Gibt für ein Thema die gesamtzahl an Karten zurück, die der Spieler jemals gespeilt hat
+    public int getGespielteKarten(String thema, int id) throws ClassNotFoundException, SQLException{
+        String query = "SELECT COUNT(gespielt) FROM relation_benutzer_karten WHERE thema = '" + thema + "' AND id_benutzer = '" + id + "';";
+        return getInteger(query);
+    }
+    
+    public int getRichtigGespielteKarten(String thema, int id) throws ClassNotFoundException, SQLException{
+        String query = "SELECT COUNT(richtig) FROM relation_benutzer_karten WHERE thema='" + thema + "'AND id_benutzer='" + id + "';";
+        return getInteger(query);
+    }
       
     public void getLastDifficult(){}
 }

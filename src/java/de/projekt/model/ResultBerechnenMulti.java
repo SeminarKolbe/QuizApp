@@ -26,9 +26,8 @@ public class ResultBerechnenMulti {
         this.correct[0] = correct1;
         this.correct[1] = correct2;
         this.correct[2] = correct3;
-        this.correct[3]= correct4;
-        this.correct[4] = correct5;
-       
+        this.correct[3] = correct4;
+        this.correct[4] = correct5;  
     }
     
     public boolean WrongRight(){
@@ -40,10 +39,7 @@ public class ResultBerechnenMulti {
             if(help[i]!=1)
                 help[i]=0;
         }
-       
-        
-        
-      
+
         for(int i=0;i<correct.length;i++){
             if(correct[i]==1&&help[i]==1){
                     right++;
@@ -56,9 +52,5 @@ public class ResultBerechnenMulti {
         if(right==anzahl)
             return true;
        return false;
-       
     }
-    
-    
-   
 }

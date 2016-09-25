@@ -36,7 +36,7 @@ public class User extends DatenbankZugang {
         int all=0;
         connect();
         Statement stmt= con.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT gespielt FROM relation_beutzer_karten WHERE thema='"+thema+"' AND id_benutzer='"+id+"';");
+        ResultSet rs = stmt.executeQuery("SELECT gespielt FROM relation_benutzer_karten WHERE thema='"+thema+"' AND id_benutzer='"+id+"';");
         while(rs.next()){
             all=all+rs.getInt("gespielt");    
         }
@@ -48,7 +48,7 @@ public class User extends DatenbankZugang {
         int right=0;
         connect();
         Statement stmt= con.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT richtig FROM relation_beutzer_karten WHERE thema='"+thema+"'AND id_benutzer='"+id+"';");
+        ResultSet rs = stmt.executeQuery("SELECT richtig FROM relation_benutzer_karten WHERE thema='"+thema+"'AND id_benutzer='"+id+"';");
         while(rs.next()){
             right=right+rs.getInt("richtig");    
         }

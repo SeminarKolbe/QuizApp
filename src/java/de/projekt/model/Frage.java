@@ -10,33 +10,18 @@ package de.projekt.model;
  * @author Shaun
  */
 public class Frage {
-    private  String question;
+    private String question;
     private String answer1;
     private String answer2;
     private String answer3;
     private String answer4;
     private String answer5;
-    private int correctanswer;      // welche der 5 Antworten ist richtig  
+    private String correctanswer;
+    private int correctanswer1;
     private int correctanswer2;
-
-    public int getCorrectanswer2() {
-        return correctanswer2;
-    }
-
-    public int getCorrectanswer3() {
-        return correctanswer3;
-    }
-
-    public int getCorrectanswer4() {
-        return correctanswer4;
-    }
-
-    public int getCorrectanswer5() {
-        return correctanswer5;
-    }
     private int correctanswer3;
     private int correctanswer4;
-    private int correctanswer5;
+    private int correctanswer5;     // welche der 5 Antworten ist richtig  
     private int maxgespielt;        // wie oft die Karte insgesamt schon gespielt wurde(auf diesen Player bezogen)
     private int madewrong;          // wie oft die Karte schon falsch beantwortet wurde(auf diesen Player bezogen)       
     private int madecorrect;        // wie oft die Karte schon korrekt beantwortet wurde(auf diesen Player bezogen)  
@@ -52,7 +37,7 @@ public class Frage {
         this.answer3=antwort3;
         this.answer4=antwort4;
         this.answer5=antwort5;
-        this.correctanswer = correctanswer;
+        setCorrectAnswer(correctanswer);
     }
     
     public Frage(int id, String thema,String frage, String antwort1,String antwort2,String antwort3,String antwort4,String antwort5, int correctanswer, int correctanswer2, int correctanswer3, int correctanswer4
@@ -65,13 +50,12 @@ public class Frage {
         this.answer3=antwort3;
         this.answer4=antwort4;
         this.answer5=antwort5;
-        this.correctanswer =correctanswer;
+        this.correctanswer1 =correctanswer;
         this.correctanswer2 =correctanswer2;
         this.correctanswer3 =correctanswer3;
         this.correctanswer4 =correctanswer4;
         this.correctanswer5 =correctanswer5;
     }
-    
     
 
     @Override
@@ -90,7 +74,7 @@ public class Frage {
         this.answer3=antwort3;
         this.answer4=antwort4;
         this.answer5=antwort5;
-        this.correctanswer= correctanswer;
+        setCorrectAnswer(correctanswer);
         this.maxgespielt = maxgespielt;
         this.madewrong=madewrong;
         this.madecorrect=madecorrect;
@@ -104,12 +88,16 @@ public class Frage {
     public void setAnswer1(String answer1) {
         this.answer1 = answer1;
     }
+    
+    public String getAnswer1() {
+        return this.answer1;
+    }
 
     public void setId(int id) {
         this.id = id;
     }
     public String getAnswer2() {
-        return answer2;
+        return this.answer2;
     }
 
     public void setAnswer2(String answer2) {
@@ -117,7 +105,7 @@ public class Frage {
     }
 
     public String getAnswer3() {
-        return answer3;
+        return this.answer3;
     }
 
     public void setAnswer3(String answer3) {
@@ -125,7 +113,7 @@ public class Frage {
     }
 
     public String getAnswer4() {
-        return answer4;
+        return this.answer4;
     }
 
     public void setAnswer4(String answer4) {
@@ -133,21 +121,76 @@ public class Frage {
     }
 
     public String getAnswer5() {
-        return answer5;
+        return this.answer5;
     }
 
     public void setAnswer5(String answer5) {
         this.answer5 = answer5;
     }
 
-    public int getCorrectanswer() {
-        return correctanswer;
+    public String getCorrectAnswer() {
+        return this.correctanswer;
     }
 
-    public void setCorrectanswer(int correctanswer) {
-        this.correctanswer = correctanswer;
+    public void setCorrectAnswer(int correctanswer) {
+        switch(correctanswer) {
+            case 1: 
+                this.correctanswer = getAnswer1();
+                return;
+            case 2: 
+                this.correctanswer = getAnswer2();
+                return;
+            case 3: 
+                this.correctanswer = getAnswer3();
+                return;
+            case 4: 
+                this.correctanswer = getAnswer4();
+                return;
+            case 5: 
+                this.correctanswer = getAnswer5();
+        }
     }
-
+    
+    public void setCorrectanswer1(int correctanswer) {
+        this.correctanswer1 = correctanswer;
+    }
+    
+    public int getCorrectanswer1() {
+        return this.correctanswer1;
+    }
+    
+    public void setCorrectanswer2(int correctanswer) {
+        this.correctanswer2 = correctanswer;
+    }
+    
+    public int getCorrectanswer2() {
+        return this.correctanswer2;
+    }
+    
+    public void setCorrectanswer3(int correctanswer) {
+        this.correctanswer3 = correctanswer;
+    }
+    
+    public int getCorrectanswer3() {
+        return this.correctanswer3;
+    }
+    
+    public void setCorrectanswer4(int correctanswer) {
+        this.correctanswer4 = correctanswer;
+    }
+    
+    public int getCorrectanswer4() {
+        return this.correctanswer4;
+    }
+    
+    public void setCorrectanswer5(int correctanswer) {
+        this.correctanswer5 = correctanswer;
+    }
+    
+    public int getCorrectanswer5() {
+        return this.correctanswer5;
+    }
+    
     public int getMaxgespielt() {
         return maxgespielt;
     }
@@ -175,15 +218,11 @@ public class Frage {
     public String getQuestion() {
         return question;
     }
-
-    public String getAnswer1() {
-        return answer1;
-    }
-    
-   
+       
     public int getId(){
         return id;
     }
+    
     public String getThema(){
             return thema;
     } 

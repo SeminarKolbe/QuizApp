@@ -21,14 +21,11 @@
                     <button data-theme="a">Back</button>
                 </form>    
                 <h1>  L'Odyssee </h1>           
-                <form action="LogoutController" method=""post class="ui-btn-right">
+                <form action="LogoutController" method="post" class="ui-btn-right">
                     <button data-theme="a">Logout</button>
                 </form>     
             </div>
-        
-        
-        
-        <% String spiel =(String) request.getAttribute("multiausgabe");%>
+        <% String spiel = request.getAttribute("multiausgabe").toString();%>
         <% int wrong = (int)request.getAttribute("wrong");%>
         <% int right = (int)request.getAttribute("right"); %>
         <h1 align="center">Endergebnis</h1>
@@ -65,7 +62,7 @@
             }
         %> 
              </p>
-        <img src="http://mob164.projektserver3.as.wiwi.uni-goettingen.de:8080/logo5.jpg">
+        <img src="Bilder/logo.JPG">
                
             
              
