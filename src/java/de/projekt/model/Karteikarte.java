@@ -68,47 +68,41 @@ public class Karteikarte extends DatenbankZugang implements Werte {
     public void setPlayset(){
         try{     
             // Anzahl aller Fragen zu diesem Thema ermitteln in der DB
-            String query = "SELECT COUNT(id_karte) FROM karten WHERE thema = '" + thema + "';";
+            String query = "SELECT COUNT(id_karte) FROM karten WHERE thema = '" + this.thema + "';";
             int maxfragen = getInteger(query);
-            
             // Anzahl aller Fragen in der DB ermitteln
             query = "SELECT COUNT(id_karte) FROM karten;";
             int allefragen = getInteger(query);
-
-            wrongset= getDifficult(thema);  // Es wird eine Liste erzeugt, in der die ID's der Karten stehen, die der User oft falsch gemacht hat
+            //wrongset= getDifficult(thema);  // Es wird eine Liste erzeugt, in der die ID's der Karten stehen, die der User oft falsch gemacht hat
             for(int i=0;i<fragenanzahl && i<maxfragen ;i++){
             //________________Einfügen der schweren Fragen_________________________________
-                if(i==0 && maxfragen>= fragenanzahl){ // das einfügen der schweren Fragen soll nur einmal geschehen
+                /*if(i==0 && maxfragen>= fragenanzahl){ // das einfügen der schweren Fragen soll nur einmal geschehen
                     Iterator schwer = wrongset.iterator();
                   
                     for(int j=0;j<schwerefragen && schwer.hasNext();j++){
                         playset.add(wrongset.get(j)); // Fügt die Frage und Antwort dem Set an Fragen hinzu, die dem Nutzer ausgegeben werden
                          i++;         // i ist die gesamtzahl an karten und muss, dadurch das eine schwere Karte hinzukommt, erhöt werden
                     }     
-                }
+                }*/
             //_________Es wird anhand der iD überprüft, ob die Karte schon im Set enthalten ist ____________________________________
-               
+                
                 int  randomid =(int) (allefragen*Math.random());    // randomid gibt eine zuffällige Id einer Karte an. 
                 
                 while(onSet(randomid) || randomid==0 || onThema(randomid)){
                     randomid =(int) (allefragen*Math.random());
                 }
                 //Frage dem playset hinzufügen
-                Statement stmt = con.createStatement();
-                ResultSet rf = stmt.executeQuery("SELECT id_karte, frage, antwort1, antwort2, antwort3, antwort4, antwort5, richtigeAntwort FROM karten WHERE thema = '"+thema+"' AND id_karte = "+randomid+";");  
-                if(rf.next()){
-                    this.playset.add(new Frage(rf.getInt(1),thema,rf.getString(2),rf.getString(3),rf.getString(4),rf.getString(5),rf.getString(6),rf.getString(7),rf.getInt(8)));
+                query = "SELECT id_karte, frage, antwort1, antwort2, antwort3, antwort4, antwort5, richtigeAntwort FROM karten WHERE thema = '"+thema+"' AND id_karte = "+randomid+";";  
+                ResultSet result = getResultSet(query);
+                if(result.next()){
+                    this.playset.add(new Frage(result.getInt(1),this.thema,result.getString(2),result.getString(3),result.getString(4),result.getString(5),result.getString(6),result.getString(7),result.getInt(8)));
                 }
-            
             }
-         Iterator i = playset.iterator();
-       
              
         }catch(Exception e){
            System.out.println(e);
            System.out.println("Bin in der Exception");
-        }
-        close();  
+        } 
     }
     //________________________________________________________________________________________-
     
@@ -127,11 +121,12 @@ public class Karteikarte extends DatenbankZugang implements Werte {
         String query = "SELECT thema FROM karten WHERE id_karte = " + id + ";";
         String themafromrandomid = getString(query);
         if(!themafromrandomid.isEmpty()){
+            System.out.println("Karteikarte themafromrandomid: "+ themafromrandomid);
             if(themafromrandomid.equals(this.thema)) {
-                return true;
+                return false;
             }
         }
-        return false;
+        return true;
         /*Statement stmtt= con.createStatement();
         ResultSet rshelp1 = stmtt.executeQuery("SELECT * FROM karten WHERE id_karte = '"+id+"';"); 
         if(rshelp1.next()){
@@ -171,7 +166,7 @@ public class Karteikarte extends DatenbankZugang implements Werte {
 
         ResultSet rf = stmt2.executeQuery("SELECT * FROM relation_benutzer_karten WHERE thema = '"+thema+"' AND id_benutzer = '"+player.getUser_id()+"';");
          //_------------------------------------________________
-
+        System.out.println("Karteikarte getDifficult()");
         while(rf.next()){
 
             // Suche die Fragen, welche zu dem thema und welche die Karten-id des rs Resultset haben(Relation zum benutzer)
@@ -199,7 +194,6 @@ public class Karteikarte extends DatenbankZugang implements Werte {
 
             }  
         }
-
         return set;     
     }
             

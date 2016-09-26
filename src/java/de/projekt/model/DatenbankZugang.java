@@ -147,16 +147,17 @@ public class DatenbankZugang {
         }
     }
     
-    /*public Frage selectFrage(String query) {
+    public ResultSet getResultSet(String query) {
+        ResultSet result = null;
         try{
             connect();
             Statement stmt = con.createStatement();
-            stmt.executeQuery(query);
-            
+            result = stmt.executeQuery(query);
         } catch(Exception e) {
             System.out.println(e.getMessage());
         }
-    }*/
+        return result;
+    }
   //_________________________________________________________________  
     
     
