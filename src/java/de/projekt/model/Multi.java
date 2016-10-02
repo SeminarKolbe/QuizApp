@@ -126,6 +126,7 @@ public class Multi extends DatenbankZugang implements Werte{
     // gibt die Ganzen Anfragen für ein Multigame aus. Falls der Spieler im Multigame herausgefordert wurde
     // jede Anfrage hat eine eigene ID. Diese werden alle in einem int [] gespeichert
     public int [] checkAnfrage() throws ClassNotFoundException, SQLException{
+        String query = ""
         ArrayList<Integer> idliste =getIntegerList("SELECT lla FROM multi WHERE player2="+player.getUser_id()+";");
         int[] anfrageid=new int[idliste.size()];
         for(int i =0;i<=idliste.size();i++){

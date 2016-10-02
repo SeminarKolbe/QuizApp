@@ -40,7 +40,7 @@ public class User extends DatenbankZugang {
         while(rs.next()){
             all=all+rs.getInt("gespielt");    
         }
-        close();
+        con.close();
      return all;
     }
     // Gibt die Anzahl an richtig gespielten Karten, die der Nutzer jemals zu einem Thema gespielt hat aus.
@@ -52,7 +52,7 @@ public class User extends DatenbankZugang {
         while(rs.next()){
             right=right+rs.getInt("richtig");    
         }
-         close();
+         con.close();
      return right;
     }
 }

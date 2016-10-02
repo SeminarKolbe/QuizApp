@@ -48,7 +48,7 @@ public class InsertDatenbank extends DatenbankZugang {
   
             stmt.executeUpdate("INSERT INTO relation_benutzer_karten (id_benutzer, id_karte, richtig, falsch, gespielt, thema) VALUES ("+player.getUser_id()+", "+frage.getId()+","+richtig+","+falsch+", 1,'"+frage.getThema()+"')");
         }    
-        close();    
+        con.close();    
            
     }
     

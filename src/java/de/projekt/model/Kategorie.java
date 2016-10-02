@@ -15,15 +15,15 @@ import java.util.List;
 public class Kategorie extends DatenbankZugang {
     
     
-    public ArrayList<String> getKategorie(){
-            String query = "SELECT name FROM thema;";
-            ArrayList<String> kategorien = getStringList(query); 
+    public ArrayList<String> getKategorien(){
+        String query = "SELECT name FROM thema;";
+        ArrayList<String> kategorien = getStringList(query); 
         return kategorien; 
     }
     
      public ArrayList<Integer> getIdKategorien(){
-            String query = "SELECT idthema FROM thema;";
-            ArrayList<Integer> idkategorien = getIntegerList(query); 
+        String query = "SELECT id_thema FROM thema;";
+        ArrayList<Integer> idkategorien = getIntegerList(query); 
         return idkategorien; 
     }
     

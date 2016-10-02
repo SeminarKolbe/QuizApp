@@ -14,11 +14,7 @@ import java.util.List;
  * @author Jonas
  */
 public class DatenbankZugang {
-    final String JDBC_TREIBER = "com.mysql.jdbc.Driver";
-    /*final String JDBC_URL = "jdbc:mysql://127.0.0.1:3307/mob164db";
-    final String JDBC_USER = "mob164";      // Hier Wert eintragen!
-    final String JDBC_PASSWORD = "S!ya0V8scj";  // Hier Wert eintragen! // Hier Wert eintragen!
-    */
+    private static final String JDBC_TREIBER = "com.mysql.jdbc.Driver";
     private static final String DB_ADRESS = "localhost:3306";      // lokale DB-Adresse
     private static final String DB_NAME = "q";
     private static final String DB_USER = "streng";
@@ -53,7 +49,7 @@ public class DatenbankZugang {
         if (con != null) {
             try {
                 con.close();
-            } catch (SQLException ex) {
+            } catch (Exception ex) {
                 System.err.println("Exception beim Versuch, die Verbindung zu schließen:");
                 System.err.println(ex);
             }
@@ -68,12 +64,12 @@ public class DatenbankZugang {
         String result = "";
         try{
             connect();
-            Statement stmt =con.createStatement();
+            Statement stmt = con.createStatement();
             ResultSet rs =stmt.executeQuery(query);
             if(rs.next()) {
                 result = rs.getString(1);
             }
-            close();
+            con.close();
         }catch(Exception e){
             System.out.println(e.getMessage());
         }
@@ -91,7 +87,7 @@ public class DatenbankZugang {
             while(rs.next()){
                 result.add(rs.getString(1));
             }
-            close();
+            con.close();
         }catch(Exception e){
             System.out.println(e.getMessage());
         }
@@ -109,13 +105,12 @@ public class DatenbankZugang {
             if(rs.next()) {
                 result = rs.getInt(1);
             }
-            close();
+            con.close();
         }catch(Exception e){
             System.out.println(e.getMessage());
         }
         return result;
     }
-    
     /*
     Holt eine Liste aus Strings von der Datenbank
     */
@@ -128,7 +123,7 @@ public class DatenbankZugang {
             while(rs.next()){
                 result.add(rs.getInt(1));
             }
-            close();
+            con.close();
         }catch(Exception e){
             System.out.println(e.getMessage());
         }
@@ -141,12 +136,13 @@ public class DatenbankZugang {
             connect();
             Statement stmt = con.createStatement();
             stmt.executeUpdate(query);
-            close();
+            con.close();
         } catch(Exception e){
             System.out.println(e.getMessage());
         }
     }
     
+    //Anstelle eines ResultSet hier eine getFrage-Methode einfügen
     public ResultSet getResultSet(String query) {
         ResultSet result = null;
         try{
@@ -173,7 +169,7 @@ public class DatenbankZugang {
         while(rs.next()){
            name.add(rs.getString(2));
         }
-        close();
+        con.close();
         return name;
     }
     //Gibt für ein Thema die gesamtzahl an Karten zurück, die der Spieler jemals gespeilt hat
@@ -185,7 +181,7 @@ public class DatenbankZugang {
         while(rs.next()){
             all=all+rs.getInt("gespielt");    
         }
-        close();
+        con.close();
      return all;
     }
     // Gibt die Anzahl an richtig gespielten Karten, die der Nutzer jemals zu einem Thema gespielt hat aus.
@@ -197,7 +193,7 @@ public class DatenbankZugang {
         while(rs.next()){
             right=right+rs.getInt("richtig");    
         }
-         close();
+         con.close();
      return right;
     }
 
@@ -211,7 +207,7 @@ public class DatenbankZugang {
             list.add(rs.getString("name"));
         
         }
-        close();
+        con.close();
         return list;
     }
     
@@ -224,7 +220,7 @@ public class DatenbankZugang {
         while(rs.next()){
             falsch=falsch+rs.getInt("falsch");    
         }
-         close(); 
+         con.close(); 
         return falsch;
     }
         
@@ -240,7 +236,7 @@ public class DatenbankZugang {
             points=points+rs.getInt("punkte");
         }
         stmt.executeUpdate("UPDATE benutzer SET punkte="+points+" WHERE name='"+username+"'");
-        close();
+        con.close();
         return;
     }
      
@@ -253,7 +249,7 @@ public class DatenbankZugang {
        while(rs.next()){
          list.add(new Player(rs.getString("name"),rs.getInt("punkte")));
        }
-       close();
+       con.close();
        return list;
     }
         

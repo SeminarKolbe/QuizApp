@@ -8,13 +8,11 @@
 <!DOCTYPE html>
 <html>
     <head>
-       
-        
-        <link rel="stylesheet" href="stylesheet.css" type="text/css"/>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" href="http://code.jquery.com/mobile/1.0.1/jquery.mobile-1.0.1.min.css" />
-        <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
-        <script src="http://code.jquery.com/mobile/1.0.1/jquery.mobile-1.0.1.min.js"></script>
+        <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+        <link rel="stylesheet" href="css/design.css" />
+        <link rel="stylesheet" href="css/jquery.mobile-1.0.1.min.css" />
+        <script src="js/jquery-1.7.1.min.js"></script>
+        <script src="js/jquery.mobile-1.0.1.min.js"></script>
         <title>Singleplayer/title>
     </head>
     <body>
@@ -30,8 +28,11 @@
         
         
         
-        <% String question = (String)request.getAttribute("question");%>
-        <% String answer = (String)request.getAttribute("answer");%>
+        <% 
+            String question = (String)request.getAttribute("question");
+            String answer = (String)request.getAttribute("answer");
+            
+        %>
          
         <script>
             function buttonAnswer(answer){
@@ -45,21 +46,14 @@
             <b>
             <%out.println(question);%>
              </b>
-            <script>
-                function right(){
-                    var right =1;
-                    
-                    response.setParameter("id", right);
-                    alert(right);
-            }
-            </script>
+
         </p>
         
                 <button ONCLICK="buttonAnswer(<%out.println(answer);%>)">Antwort anzeigen</button>
-                <form action="VerarbeitungsControllerSingle?id=1" method="post">
+                <form action="SingleplayerController?id=1" method="post">
                     <button>richtig</button>     
                 </form> 
-                <form action="VerarbeitungsControllerSingle?id=0" method="post">
+                <form action="SingleplayerController?id=0" method="post">
                     <button>falsch</button>     
                 </form> 
        </div>        

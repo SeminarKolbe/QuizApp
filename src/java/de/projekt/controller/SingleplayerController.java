@@ -10,7 +10,6 @@ import de.projekt.model.Karteikarte;
 import de.projekt.model.Player;
 import de.projekt.model.Werte;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -22,9 +21,9 @@ import javax.servlet.http.HttpSession;
  *
  * @author Jonas
  */
-@WebServlet(name = "VerarbeitungsControllerSingle", urlPatterns = {"/VerarbeitungsControllerSingle"})
-public class VerarbeitungsControllerSingle extends HttpServlet implements Werte{
- public static int count=0;  
+@WebServlet(name = "SingleplayerController", urlPatterns = {"/SingleplayerController"})
+public class SingleplayerController extends HttpServlet implements Werte{
+ public static int count;  
  public Karteikarte single;
  public int setsize;
  public static int right=0;
@@ -40,51 +39,41 @@ public class VerarbeitungsControllerSingle extends HttpServlet implements Werte{
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-                     // Erstellen der Karten wird nur einmal ausgeführt
-        if(count==0){
-             HttpSession session = request.getSession();
-             Player player=(Player) session.getAttribute("player");
-             System.out.println("Player: " + player.toString());
-             String thema = request.getParameter("category");
-             System.out.println("Thema: " + thema);
-             single = new Karteikarte(thema, player);
-             setsize = single.getPlaysetSize();      // Erstellt das Fragen-set
-             System.out.println("VerarbeitungsControllerSingle setsize: " + setsize);
-        }
-
+        
+        HttpSession session = request.getSession();
             //______________________________ Ausgabe der Karten
-        if(count>=1){
-           String h= request.getParameter("id");
-           int answer = Integer.parseInt(h);  // Wenn answer 1 dann wurde die Frage richtig beantwortet, wenn 0 dann falsch
-           if(answer==1)    
-               right++;
-           else
-               wrong++;
-           InsertDatenbank m = new InsertDatenbank(answer,single.getPlayset(count-1),single.getPlayer());
-           try{
-                m.insertDatenbankAnswer();
-           }catch(Exception e){
-               System.out.println(e);
-           } 
-        }
-            // Alle Karten wurden gespielt. Weitergabe an das EndResult
+        count = (int) session.getAttribute("count");
+        single = (Karteikarte) session.getAttribute("single");
+        setsize = single.getPlaysetSize();
+        System.out.println("hier bin ich SingleplayerController. count: " + count + "\nsetsize: " + setsize);
+        int answer = Integer.parseInt(request.getParameter("id"));  // Wenn answer 1 dann wurde die Frage richtig beantwortet, wenn 0 dann falsch
+        if(answer==1)    
+            right++;
+        else
+            wrong++;
+        InsertDatenbank m = new InsertDatenbank(answer,single.getPlayset(count),single.getPlayer());
+        try{
+            m.insertDatenbankAnswer();
+        }catch(Exception e){
+           System.out.println(e);
+        } 
+        count++;
         if(count>=setsize){ 
             String multiausgabe="single";
             request.setAttribute("right",right);
             request.setAttribute("wrong",wrong);
             request.setAttribute("multiausgabe",multiausgabe);
             request.getRequestDispatcher("/WEB-INF/views/EndResult.jsp").forward(request, response);
-        }  
-
-        //Gibt die jeweilige Frage aus
-        String question= single.getQuestion(count);
-        String answer= single.getCorrectAnswer(count);
-        System.out.println("VerarbeitungsControllerSingle count: " + count + "\nVerarbeitungsControllerSingle question: " + question + "\nVerarbeitungsCongrollerSingle answer: " + answer);
-        count++;
-        request.setAttribute("answer",answer);
-        request.setAttribute("question",question);
-        request.getRequestDispatcher("/WEB-INF/views/AusgabeSinglePlayer.jsp").forward(request, response);
-            
+        } else{
+            //Gibt die jeweilige Frage aus
+            String question= single.getQuestion(count);
+            String correctAnswer= single.getCorrectAnswer(count);
+            System.out.println("SingleplayerController count: " + count + "\nSingleplayerController question: " + question + "\nVerarbeitungsCongrollerSingle answer: " + answer);
+            session.setAttribute("count", count);
+            request.setAttribute("question",question);
+            request.setAttribute("answer",correctAnswer);
+            request.getRequestDispatcher("/WEB-INF/views/AusgabeSinglePlayer.jsp").forward(request, response);
+        } 
     }
            
             

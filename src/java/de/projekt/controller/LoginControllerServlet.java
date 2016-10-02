@@ -45,9 +45,9 @@ public class LoginControllerServlet extends HttpServlet {
             password= sessio.getAttribute("password").toString();
             userName= sessio.getAttribute("userName").toString();
             ControllerCategory.thema = null;  // muss auf null gesetzt werden, da sonst beim ControllerCategory ein Fehler auftritt
-            VerarbeitungsControllerSingle.wrong=0;
-            VerarbeitungsControllerSingle.right=0;
-            VerarbeitungsControllerSingle.count=0;
+            SingleplayerController.wrong=0;
+            SingleplayerController.right=0;
+            SingleplayerController.count=0;
         }catch(Exception e){
             System.out.println(e);
             userName = request.getParameter("userName");

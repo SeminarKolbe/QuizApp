@@ -17,18 +17,18 @@ public class Frage {
     private String answer4;
     private String answer5;
     private String correctanswer;
-    private int correctanswer1;
+    /*private int correctanswer1;
     private int correctanswer2;
     private int correctanswer3;
     private int correctanswer4;
-    private int correctanswer5;     // welche der 5 Antworten ist richtig  
+    private int correctanswer5;*/     // welche der 5 Antworten ist richtig  
     private int maxgespielt;        // wie oft die Karte insgesamt schon gespielt wurde(auf diesen Player bezogen)
     private int madewrong;          // wie oft die Karte schon falsch beantwortet wurde(auf diesen Player bezogen)       
     private int madecorrect;        // wie oft die Karte schon korrekt beantwortet wurde(auf diesen Player bezogen)  
     private int id;
     private String thema;
     
-    public Frage(int id, String thema,String frage, String antwort1,String antwort2,String antwort3,String antwort4,String antwort5, int correctanswer){
+    public Frage(int id, String thema,String frage, String antwort1,String antwort2,String antwort3,String antwort4,String antwort5, String correctAnswer){
         this.id=id;
         this.thema=thema;
         this.question=frage;
@@ -37,7 +37,7 @@ public class Frage {
         this.answer3=antwort3;
         this.answer4=antwort4;
         this.answer5=antwort5;
-        setCorrectAnswer(correctanswer);
+        this.correctanswer = correctAnswer;
     }
     
     public Frage(int id, String thema,String frage, String antwort1,String antwort2,String antwort3,String antwort4,String antwort5, int correctanswer, int correctanswer2, int correctanswer3, int correctanswer4
@@ -50,11 +50,11 @@ public class Frage {
         this.answer3=antwort3;
         this.answer4=antwort4;
         this.answer5=antwort5;
-        this.correctanswer1 =correctanswer;
+        /*this.correctanswer1 =correctanswer;
         this.correctanswer2 =correctanswer2;
         this.correctanswer3 =correctanswer3;
         this.correctanswer4 =correctanswer4;
-        this.correctanswer5 =correctanswer5;
+        this.correctanswer5 =correctanswer5;*/
     }
     
 
@@ -64,7 +64,7 @@ public class Frage {
     }
     
     //__________________ Zweiter Kontruktor behinhaltet schon eine Relation zum Player und speicher was dieser falsch gemacht hat
-     public Frage(int id, String thema, String frage, String antwort1,String antwort2,String antwort3,String antwort4,String antwort5, int correctanswer,int maxgespielt,
+     public Frage(int id, String thema, String frage, String antwort1,String antwort2,String antwort3,String antwort4,String antwort5, String correctanswer,int maxgespielt,
              int madewrong, int madecorrect){
         this.id=id;
         this.thema=thema;
@@ -74,7 +74,7 @@ public class Frage {
         this.answer3=antwort3;
         this.answer4=antwort4;
         this.answer5=antwort5;
-        setCorrectAnswer(correctanswer);
+        this.correctanswer=correctanswer;
         this.maxgespielt = maxgespielt;
         this.madewrong=madewrong;
         this.madecorrect=madecorrect;
@@ -129,29 +129,31 @@ public class Frage {
     }
 
     public String getCorrectAnswer() {
-        return this.correctanswer;
-    }
-
-    public void setCorrectAnswer(int correctanswer) {
-        switch(correctanswer) {
-            case 1: 
-                this.correctanswer = getAnswer1();
-                return;
-            case 2: 
-                this.correctanswer = getAnswer2();
-                return;
-            case 3: 
-                this.correctanswer = getAnswer3();
-                return;
-            case 4: 
-                this.correctanswer = getAnswer4();
-                return;
-            case 5: 
-                this.correctanswer = getAnswer5();
+        Multigame help = new Multigame();
+        int[] correctAnswer = help.IDsStringtoIntArray(this.correctanswer);
+        for(int i = 0; i< 5; i++){
+            switch(i){
+                case 0:
+                    if(correctAnswer[i] == 1) return this.answer1;
+                    break;
+                case 1:
+                    if(correctAnswer[i] == 1) return this.answer2;
+                    break;
+                case 2:
+                    if(correctAnswer[i] == 1) return this.answer3;
+                    break;
+                case 3:
+                    if(correctAnswer[i] == 1) return this.answer4;
+                    break;
+                case 4:
+                    if(correctAnswer[i] == 1) return this.answer5;
+                    break;
+            }
         }
+        return "";
     }
     
-    public void setCorrectanswer1(int correctanswer) {
+    /*public void setCorrectanswer1(int correctanswer) {
         this.correctanswer1 = correctanswer;
     }
     
@@ -189,7 +191,7 @@ public class Frage {
     
     public int getCorrectanswer5() {
         return this.correctanswer5;
-    }
+    }*/
     
     public int getMaxgespielt() {
         return maxgespielt;

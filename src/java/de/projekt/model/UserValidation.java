@@ -29,8 +29,8 @@ public class UserValidation extends DatenbankZugang {
 
     // überprüft ob der User und Passwort in der Datenbank gespeichert sind
     public boolean isUserValid(String username, String password) throws ClassNotFoundException, SQLException{
-        String querynames = "select name from benutzer";
-        String querypasswords = "select passwort from benutzer";
+        String querynames = "select name from benutzer;";
+        String querypasswords = "select passwort from benutzer;";
         ArrayList<String> users = getStringList(querynames);
         ArrayList<String> passwords =getStringList(querypasswords);
         

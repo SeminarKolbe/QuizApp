@@ -5,7 +5,7 @@
  */
 package de.projekt.controller;
 
-import de.projekt.model.Multi;
+import de.projekt.model.Multigame;
 import de.projekt.model.Player;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -39,45 +39,59 @@ public class SpielModusServlet extends HttpServlet {
         System.out.println("Bin im SpielModusServlet");
         String strCategoryParameter =request.getParameter("category");  // Jeder Spielmodus hat eine bestimmte Zahl
         System.out.println("Nummer der Kategorie: "+strCategoryParameter);
-        if(strCategoryParameter.equals("3")){ // Falls der Spieler den Einzelmodus auswählt, wird er zu den Kategorien weitergeleitet
-           request.getRequestDispatcher("/WEB-INF/views/category.jsp").forward(request, response);
-        }
         
-        
-        
-        /*
-        *
-        * Muss noch im MultiAuswahl implementiert werden
-        */
-        if(strCategoryParameter.equals("2")){// Falls der Spieler den Mehrspielermodus auswählt, wird er zu Spielerauswahl weitergeleitet
-                  //Überprüft ob ein Spieler eine Anfrage hat  
-                  HttpSession session = request.getSession();
-                  System.out.println("ControllerCategory Session: " + session);
-                  Player player = (Player) session.getAttribute("player");
-                  Multi ueberpruefen= new Multi(player);
-                  System.out.println("ControllerCategory Player: " + (Player)session.getAttribute("player") + "\n" + "ueberpruefen: " + ueberpruefen);  
+        switch(strCategoryParameter) {
+            
+/***************************************SinglePlayer-Modus ausgewählt*******************************/
+            case "3": 
+                request.getRequestDispatcher("/WEB-INF/views/category.jsp").forward(request, response);
+                break;
+            
+/***************************************MultiplayerModus ausgewählt*********************************/
+            case "2":
+                HttpSession session = request.getSession();
+                Player player = (Player) session.getAttribute("player");
+                Multigame playermultigame = new Multigame();
+                System.out.println("ControllerCategory Player: " + (Player)session.getAttribute("player"));  
                 
                 try{
                     System.out.println("1.");
-                    int[] anfrageid= ueberpruefen.checkAnfrage(); // Guckt ob für den Spieler Spielanfargen vorliegen
-                    List <String> name =new ArrayList<String>();
+                    //liegen Anfragen für die erste oder zweite Runde vor?
+                    ArrayList<Integer> GameRequestIDsround1 = playermultigame.getGameRequests(player.getUser_id(), 1);
+                    ArrayList<Integer> GameRequestIDsround2 = playermultigame.getGameRequests(player.getUser_id(), 2);
+                    System.out.println("SpielmodusServlet GameRequestIDsrunde1 : " + GameRequestIDsround1);
+                    System.out.println("SpielmodusServlet GameRequestIDsrunde2 : " + GameRequestIDsround2);
+                    List<String> names1 =new ArrayList<String>();
+                    List<String> names2 = new ArrayList<String>();
                     System.out.println("2.");
-                    for(int i=0;i<anfrageid.length;i++){
-                        name.add(ueberpruefen.getPlayer(anfrageid[i]));  // Sucht anhander der Game-Id eines Duell den Passenden Spieler und gibt diesen als String zurück
+                    //Spielernamen des anderen Teilnehmers am Multigame
+                    for(int i=0; i < GameRequestIDsround1.size(); i++){
+                        Multigame actualMultigame = new Multigame(GameRequestIDsround1.get(i));
+                        names1.add(actualMultigame.getotherPlayerName(player.getUser_id()));
+                    }
+                    for(int i=0; i < GameRequestIDsround2.size(); i++){
+                        Multigame actualMultigame = new Multigame(GameRequestIDsround2.get(i));
+                        names2.add(actualMultigame.getotherPlayerName(player.getUser_id()));
                     }
                     System.out.println("3.");
-                    request.setAttribute("anfrageid", anfrageid);  //übergeben der einzelnen id's der Multiplayerspiele
-                    request.setAttribute("anfrage", name); // übergibt einen Namen mit dem String des Gegners
+                    //Die MultigameIDs und dazugehörige Namen in der Request-Anfrage hinterlegen
+                    request.setAttribute("GameRequestIDsround1", GameRequestIDsround1);
+                    request.setAttribute("names1", names1); // übergibt einen Namen mit dem String des Gegners
+                    request.setAttribute("GameRequestIDsround2", GameRequestIDsround2);
+                    request.setAttribute("names2", names2);
                 }catch(Exception e){
                     System.out.println("ControllerCategory.java / Bin in der Exception, als ich probiert habe die Anfragen für die Multigames zu laden");
                     System.out.println(e);
                 }
+                //Um ein Multigame zu erstellen werden die anderen Spielernamen in der Request hinterlegt
                 ArrayList<String> gegnernamen = player.getOpponentsNames();
                 request.setAttribute("gegnernamen", gegnernamen);
                 request.getRequestDispatcher("/WEB-INF/views/MultiAuswahl.jsp").forward(request, response);
-            
+                break;
+                
+/*********************************Falscher CategoryParameter*********************************************/
+            default: throw new IllegalArgumentException("Nicht erkannter CategoryParameter!");      
         }
-        return;
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

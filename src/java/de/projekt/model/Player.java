@@ -33,7 +33,13 @@ public class Player extends DatenbankZugang {
         this.user_id = getIdPlayer(); 
         this.points = getPoints();
     }
-
+    
+    public Player(int playerid) throws SQLException{
+        this.user_id = playerid;
+        this.name = getPlayerName(playerid);
+        this.points = getPoints();
+        
+    }
     public Player(String name, int points) throws ClassNotFoundException, SQLException{
         this.name=name;
         this.points=points;
@@ -41,11 +47,11 @@ public class Player extends DatenbankZugang {
     }
     
     public String getName(){
-        return name;
+        return this.name;
     }
     
     public int getUser_id(){
-        return user_id;
+        return this.user_id;
     } 
     
     public List<ResultSet> getDifficult(String thema) throws ClassNotFoundException, SQLException {
@@ -68,7 +74,7 @@ public class Player extends DatenbankZugang {
                 }
             }  
         }
-        close();
+        con.close();
         return set;     
     }
 
@@ -77,11 +83,15 @@ public class Player extends DatenbankZugang {
         this.user_id = getInteger(query);
         return user_id;
     }
-
+    
+    public String getPlayerName(int playerid)throws SQLException{
+        String query = "SELECT name FROM benutzer WHERE id_benutzer =" + playerid + ";";
+        return getString(query);
+    }
     //Gibt eine Liste mit den Namen der Gegner zurück
        
     public ArrayList<String> getOpponentsNames(){
-        String query = "SELECT name FROM benutzer WHERE name <>'"+name+"';";
+        String query = "SELECT name FROM benutzer WHERE name <>'"+name+"' AND name <> 'admin';";
         ArrayList<String> opponentsnames = getStringList(query);
         return opponentsnames;
     } 

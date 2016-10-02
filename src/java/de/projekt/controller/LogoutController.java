@@ -37,14 +37,9 @@ public class LogoutController extends HttpServlet {
             try{
                
                 ControllerCategory.thema = null;  // muss auf null gesetzt werden, da sonst beim ControllerCategory ein Fehler auftritt
-                VerarbeitungsControllerSingle.wrong=0;
-                VerarbeitungsControllerSingle.right=0;
-                VerarbeitungsControllerSingle.count=0;
-                VerarbeitungsControllerMulti.wrong=0;
-                VerarbeitungsControllerMulti.right=0;
-                VerarbeitungsControllerMulti.answercheck="0";
-                VerarbeitungsControllerMulti.spielerzug=0;
-                VerarbeitungsControllerMulti.i=0;
+                SingleplayerController.wrong=0;
+                SingleplayerController.right=0;
+                SingleplayerController.count=0;
                 HttpSession session = request.getSession();
                 session.invalidate();
                

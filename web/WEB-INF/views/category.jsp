@@ -1,22 +1,16 @@
 <%@page import="de.projekt.model.Kategorie"%>
-<%@page import="java.util.List"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="java.sql.ResultSet"%>
-<%@page import="java.sql.Statement"%>
-<%@page import="java.sql.DriverManager"%>
-<%@page import="java.sql.Connection"%>
-<%@page import="de.projekt.model.DatenbankZugang"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
   
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
-        <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
-        <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+        <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+        <link rel="stylesheet" href="css/jquery.mobile-1.0.1.min.css" />
+        <link rel="stylesheet" href="css/design.css" />
+        <script src="js/jquery-1.11.1.min.js"></script>
+        <script src="js/jquery.mobile-1.4.5.min.js"></script>
         <title>Kategorieauswahl</title>
-        <link rel="stylesheet" href="stylesheet.css" type="text/css"/>
     </head>
     <body>
         <div data-role="page">   
@@ -47,7 +41,7 @@
                     <ul data-role="listview" data-ajax="false" data-inset="true" data-theme="c">
                 <!-- KATEGORIEN WERDEN GELADEN -->    
                       <% Kategorie kategorien =  new Kategorie(); 
-                         ArrayList<String> kategoriethemen= kategorien.getKategorie(); // Guck auf der Datenbank, welche Kategorien hinterlegt sind
+                         ArrayList<String> kategoriethemen= kategorien.getKategorien(); // Guck auf der Datenbank, welche Kategorien hinterlegt sind
                          for(int i = 0; i < kategoriethemen.size(); i++) {
                             out.print("<li><a href=\"ControllerCategory?category="+kategoriethemen.get(i)+"\">"+kategoriethemen.get(i)+"</a></li>");
                         }
