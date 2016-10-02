@@ -5,7 +5,7 @@
 <html>
     <head>
   
-        <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="css/jquery.mobile-1.0.1.min.css" />
         <link rel="stylesheet" href="css/design.css" />
         <script src="js/jquery-1.11.1.min.js"></script>
@@ -47,6 +47,12 @@
                         }
                         %></ul> 
                 </div>
+                
+                <p>Erstelle eine neue Karteikarte</p>
+                <form action="ControllerCategory?category=NewNotecard">
+                    <button>Zur Karteikartenerstellung</button>
+                </form>
+                
             </div>    
                 <div data-role="footer" data-theme="c" id="footer"><h1></h1></div>
         </div>

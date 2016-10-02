@@ -102,7 +102,7 @@
                 <form action="LogoutController" method="post" class="ui-btn-right">
                     <button data-theme="a">Logout</button>
                 </form>     
-            </div>
+        </div>
         <div data-role="content" style="margin:10px">
             <h2><%out.println(session.getAttribute("currentThema").toString());%></h2>
             <p><%out.println("Du spielst gegen: " + multigame.getotherPlayerName(player.getUser_id()));%><p>
@@ -158,11 +158,11 @@
                 var deadline = new Date(Date.parse(new Date()) + 15 * 1000);
                 initializeClock('clockdiv', deadline);
             </script>
-        <h3>Time Remaining</h3>
+        <h3>Verbleibende Zeit</h3>
         <div id="clockdiv">
           <div>
             <span class="seconds"></span>
-            <div class="smalltext">Seconds</div>
+            <div class="smalltext">Sekunden</div>
           </div>
         </div>
         <div data-role="footer" data-theme="c" id="footer"><h1></h1></div>

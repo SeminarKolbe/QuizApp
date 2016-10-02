@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="css/jquery.mobile-1.0.1.min.css" />
         <link rel="stylesheet" href="css/design.css" />
         <script src="js/jquery-1.7.1.min.js"></script>
@@ -12,13 +12,18 @@
     </head>
     <body>
         <h1>Fehler</h1>
+        <p>Beim Verarbeiten Ihrer Anfrage trat der folgende Fehler auf:</p>
+        <p style="color:red;">
+            <c:out value = "${requestScope.error}"/>
+        </p>
+           <!-- <h1>Fehler</h1>
 		<p>Beim Verarbeiten Ihrer Anfrage trat der folgende Fehler auf:</p>
 		<p style="color:red;">
-			<%-- Fehlermeldung ausgeben, die der Controller bereitgelegt hat: --%>
-			<c:out value="${requestScope.errorMessage}"/>
+			<%-- Fehlermeldung ausgeben, die der Controller bereitgelegt hat: 
+			<c:out value="${requestScope.errorMessage}"/>--%>
 		</p>
                 <a href="LoginControllerServlet">
                 <input type="button" value="Zurück zur Auswahl"/>
-                </a>
+                </a>-->
     </body>
 </html>

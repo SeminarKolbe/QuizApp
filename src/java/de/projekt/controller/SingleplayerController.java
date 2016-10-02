@@ -63,6 +63,7 @@ public class SingleplayerController extends HttpServlet implements Werte{
             request.setAttribute("right",right);
             request.setAttribute("wrong",wrong);
             request.setAttribute("multiausgabe",multiausgabe);
+            session.setAttribute("count", 0);
             request.getRequestDispatcher("/WEB-INF/views/EndResult.jsp").forward(request, response);
         } else{
             //Gibt die jeweilige Frage aus

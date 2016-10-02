@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="css/jquery.mobile-1.0.1.min.css" />
         <link rel="stylesheet" href="css/design.css" />
         <script src="js/jquery-1.7.1.min.js"></script>

@@ -200,5 +200,17 @@ public class Karteikarte extends DatenbankZugang implements Werte {
         return set;     
     }
             
-    
+    public void createNotecard(String thema, String question, String correctAnswer, int creatorID){
+        String query = "INSERT INTO karten (thema,frage,antwort1,antwort2,antwort3,antwort4,antwort5,richtigeAntworten,punkte,fragetyp, hersteller) "
+                + "VALUES ('" + thema + "', '" + question + "', '" + correctAnswer + "', \"\", \"\", \"\", \"\", '1-0-0-0-0', 10, 'single', " + creatorID + ");";
+        System.out.println(query);
+        insertQuery(query);
+        //Ist das Thema nicht in der Thema-Tabelle vorhanden, füge es ein   - unschöne Lösung
+        query = "SELECT id_thema FROM thema WHERE name = '" + thema + "';";
+        if(getString(query).isEmpty()){
+            query = "INSERT INTO thema (name) VALUES ('" + thema + "');";
+            insertQuery(query);
+        }
+        System.out.println("Insert neues thema - query: " + query);
+    }
  }
