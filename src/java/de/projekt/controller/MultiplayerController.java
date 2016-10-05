@@ -79,9 +79,9 @@ int round;
                 Multigame currentMultigame = new Multigame(currentPlayer, request.getParameter("gegnerName"));
                 session.setAttribute("multigame", currentMultigame);
                 request.setAttribute("otherPlayerName", currentMultigame.getotherPlayerName(currentPlayer.getUser_id()));
-                session.setAttribute("round", 1);
+                session.setAttribute("round", 0);
                 System.out.println("MultiplayerController Anfragetyp Herausforderung gewählter Spieler erstellen: " + id + "\notherPlayername: " + currentMultigame.getotherPlayerName(currentPlayer.getUser_id()));
-                request.getRequestDispatcher("/WEB-INF/views/category.jsp").forward(request, response);
+                request.getRequestDispatcher("/WEB-INF/views/categoryMultiplayer.jsp").forward(request, response);
                 break;
             case "randomOpponent":
                 currentMultigame = new Multigame();
@@ -90,8 +90,8 @@ int round;
                 System.out.println("MultiplayerController Anfragetyp Herausforderung an zufälligen Spieler: " + id);
                 session.setAttribute("multigame", currentMultigame);
                 request.setAttribute("otherPlayerName", otherPlayer);
-                session.setAttribute("round", 1);
-                request.getRequestDispatcher("/WEB-INF/views/category.jsp").forward(request, response);
+                session.setAttribute("round", 0);
+                request.getRequestDispatcher("/WEB-INF/views/categoryMultiplayer.jsp").forward(request, response);
                 break;
                 
 /***************************************Runde 1 Spieler spielt 3 Themen des Herausforderes****************************/                
@@ -136,7 +136,20 @@ int round;
         Multigame currentMultigame = (Multigame) session.getAttribute("multigame");
         System.out.println("MultiplayerController3 round:" + round);
 /***************************************Multigame befindet sich in der ersten Runde************************************/
-        if( (int)session.getAttribute("round") == 1) {
+        if((int)session.getAttribute("round") == 0){
+            String[] chosenthemen = request.getParameterValues("category");
+            System.out.println("hier bin ich bei Controller vor MultigameRequest");
+            currentMultigame.setMultigameRequest(chosenthemen[0], chosenthemen[1], chosenthemen[2]);
+            cardset = currentMultigame.getcardset1round1();
+            questionID = currentMultigame.IDsStringtoIntArray(cardset);
+            request.setAttribute("question", currentMultigame.getQuestion(questionID[0]));
+            request.setAttribute("answers", currentMultigame.getAnswers(questionID[0]));
+            session.setAttribute("currentThema", currentMultigame.getthema1round1());
+            session.setAttribute("round", 1);
+            session.setAttribute("done", "not yet");
+            request.getRequestDispatcher("/WEB-INF/views/AusgabeMultiplayer.jsp").forward(request, response);
+        }
+        if((int)session.getAttribute("round") == 1) {
             switch(themafrage) {
                 case "thema1frage1":
                     cardset = currentMultigame.getcardset1round1();
@@ -145,12 +158,12 @@ int round;
                     request.setAttribute("answers", currentMultigame.getAnswers(questionID[0]));
                     session.setAttribute("currentThema", currentMultigame.getthema1round1());
                     request.setAttribute("next", 2);
-                    userantworten.clear();
                     //Wenn Antworten abgegeben wurden werden sie ausgewertet. Bei keinen angekreuzten Antworten wird userantworten mit einem Eintrag "null" ergänzt.
                     if(session.getAttribute("done").equals("done")){
                         if(request.getParameterValues("answer") != null){
                             userantworten = StringArraytoArrayList(request.getParameterValues("answer"));
                         } else {
+                            userantworten.clear();
                             userantworten.add("null");
                         }
                         correctedAnswers = checkAnswers(userantworten, currentMultigame.getCorrectAnswers(questionID[0]));
@@ -168,11 +181,11 @@ int round;
                     request.setAttribute("question", currentMultigame.getQuestion(questionID[1]));
                     request.setAttribute("answers", currentMultigame.getAnswers(questionID[1]));
                     request.setAttribute("next", 3);
-                    userantworten.clear();
                     if(session.getAttribute("done").equals("done")){
                         if(request.getParameterValues("answer") != null){
                             userantworten = StringArraytoArrayList(request.getParameterValues("answer"));
                         } else {
+                            userantworten.clear();
                             userantworten.add("null");
                         }                        
                         correctedAnswers = checkAnswers(userantworten, currentMultigame.getCorrectAnswers(questionID[1]));
@@ -189,11 +202,11 @@ int round;
                     request.setAttribute("question", currentMultigame.getQuestion(questionID[2]));
                     request.setAttribute("answers", currentMultigame.getAnswers(questionID[2]));
                     request.setAttribute("next", 4);
-                    userantworten.clear();
                     if(session.getAttribute("done").equals("done")){
                         if(request.getParameterValues("answer") != null){
                             userantworten = StringArraytoArrayList(request.getParameterValues("answer"));
                         } else {
+                            userantworten.clear();
                             userantworten.add("null");
                         }
                         correctedAnswers = checkAnswers(userantworten, currentMultigame.getCorrectAnswers(questionID[2]));
@@ -211,11 +224,11 @@ int round;
                     request.setAttribute("answers", currentMultigame.getAnswers(questionID[0]));
                     session.setAttribute("currentThema", currentMultigame.getthema2round1());
                     request.setAttribute("next", 5);
-                    userantworten.clear();
                     if(session.getAttribute("done").equals("done")){
                         if(request.getParameterValues("answer") != null){
                             userantworten = StringArraytoArrayList(request.getParameterValues("answer"));
                         } else {
+                            userantworten.clear();
                             userantworten.add("null");
                         }
                         correctedAnswers = checkAnswers(userantworten, currentMultigame.getCorrectAnswers(questionID[0]));
@@ -232,11 +245,11 @@ int round;
                     request.setAttribute("question", currentMultigame.getQuestion(questionID[1]));
                     request.setAttribute("answers", currentMultigame.getAnswers(questionID[1]));
                     request.setAttribute("next", 6);
-                    userantworten.clear();
                     if(session.getAttribute("done").equals("done")){
                         if(request.getParameterValues("answer") != null){
                             userantworten = StringArraytoArrayList(request.getParameterValues("answer"));
                         } else {
+                            userantworten.clear();
                             userantworten.add("null");
                         }
                         correctedAnswers = checkAnswers(userantworten, currentMultigame.getCorrectAnswers(questionID[1]));
@@ -253,11 +266,11 @@ int round;
                     request.setAttribute("question", currentMultigame.getQuestion(questionID[2]));
                     request.setAttribute("answers", currentMultigame.getAnswers(questionID[2]));
                     request.setAttribute("next", 7);
-                    userantworten.clear();
                     if(session.getAttribute("done").equals("done")){
                         if(request.getParameterValues("answer") != null){
                             userantworten = StringArraytoArrayList(request.getParameterValues("answer"));
                         } else {
+                            userantworten.clear();
                             userantworten.add("null");
                         }
                         correctedAnswers = checkAnswers(userantworten, currentMultigame.getCorrectAnswers(questionID[2]));
@@ -275,11 +288,11 @@ int round;
                     request.setAttribute("answers", currentMultigame.getAnswers(questionID[0]));
                     session.setAttribute("currentThema", currentMultigame.getthema3round1());
                     request.setAttribute("next", 8);
-                    userantworten.clear();
                     if(session.getAttribute("done").equals("done")){
                         if(request.getParameterValues("answer") != null){
                             userantworten = StringArraytoArrayList(request.getParameterValues("answer"));
                         } else {
+                            userantworten.clear();
                             userantworten.add("null");
                         }
                         correctedAnswers = checkAnswers(userantworten, currentMultigame.getCorrectAnswers(questionID[0]));
@@ -296,11 +309,11 @@ int round;
                     request.setAttribute("question", currentMultigame.getQuestion(questionID[1]));
                     request.setAttribute("answers", currentMultigame.getAnswers(questionID[1]));
                     request.setAttribute("next", 9);
-                    userantworten.clear();
                     if(session.getAttribute("done").equals("done")){
                         if(request.getParameterValues("answer") != null){
                             userantworten = StringArraytoArrayList(request.getParameterValues("answer"));
                         } else {
+                            userantworten.clear();
                             userantworten.add("null");
                         }
                         correctedAnswers = checkAnswers(userantworten, currentMultigame.getCorrectAnswers(questionID[1]));
@@ -317,11 +330,11 @@ int round;
                     request.setAttribute("question", currentMultigame.getQuestion(questionID[2]));
                     request.setAttribute("answers", currentMultigame.getAnswers(questionID[2]));
                     request.setAttribute("next", 10);
-                    userantworten.clear();
                     if(session.getAttribute("done").equals("done")){
                         if(request.getParameterValues("answer") != null){
                             userantworten = StringArraytoArrayList(request.getParameterValues("answer"));
                         } else {
+                            userantworten.clear();
                             userantworten.add("null");
                         }
                         correctedAnswers = checkAnswers(userantworten, currentMultigame.getCorrectAnswers(questionID[2]));
@@ -334,13 +347,18 @@ int round;
                 
                 case "endround":
                     currentMultigame.setPointsforPlayer(currentPlayer, (int) session.getAttribute("points"));
-                    currentMultigame.setRound(2);
+//Runde = 0 Spieleröffner hat gespielt, Runde = 1 Spielannehmer hat gespielt/kann gespielt werden
+                    if(currentMultigame.getRound() == 1){
+                        currentMultigame.setRound(2);
+                    }else {
+                        currentMultigame.setRound(1);
+                    }
                     System.out.println("pointsrunde2: " + (int) session.getAttribute("points"));
                     request.getRequestDispatcher("/WEB-INF/views/Spielmodiwahl.jsp").forward(request, response);
                     break;
             }
         }
-        System.out.println("MultiplayerController runde 2");
+        System.out.println("MultiplayerController4 runde 2");
 /***************************************Multigame befindet sich in der zweiten Runde************************************/
         if((int)session.getAttribute("round") == 2) {
             switch(themafrage) {
@@ -355,6 +373,7 @@ int round;
                         if(request.getParameterValues("answer") != null){
                             userantworten = StringArraytoArrayList(request.getParameterValues("answer"));
                         } else {
+                            userantworten.clear();
                             userantworten.add("null");
                         }
                         correctedAnswers = checkAnswers(userantworten, currentMultigame.getCorrectAnswers(questionID[0]));
@@ -371,11 +390,11 @@ int round;
                     request.setAttribute("question", currentMultigame.getQuestion(questionID[1]));
                     request.setAttribute("answers", currentMultigame.getAnswers(questionID[1]));
                     request.setAttribute("next", 3);
-                    userantworten.clear();
                     if(session.getAttribute("done").equals("done")){
                         if(request.getParameterValues("answer") != null){
                             userantworten = StringArraytoArrayList(request.getParameterValues("answer"));
                         } else {
+                            userantworten.clear();
                             userantworten.add("null");
                         }
                         correctedAnswers = checkAnswers(userantworten, currentMultigame.getCorrectAnswers(questionID[1]));
@@ -392,11 +411,11 @@ int round;
                     request.setAttribute("question", currentMultigame.getQuestion(questionID[2]));
                     request.setAttribute("answers", currentMultigame.getAnswers(questionID[2]));
                     request.setAttribute("next", 4);
-                    userantworten.clear();
                     if(session.getAttribute("done").equals("done")){
                         if(request.getParameterValues("answer") != null){
                             userantworten = StringArraytoArrayList(request.getParameterValues("answer"));
                         } else {
+                            userantworten.clear();
                             userantworten.add("null");
                         }
                         correctedAnswers = checkAnswers(userantworten, currentMultigame.getCorrectAnswers(questionID[2]));
@@ -414,11 +433,11 @@ int round;
                     request.setAttribute("answers", currentMultigame.getAnswers(questionID[0]));
                     session.setAttribute("currentThema", currentMultigame.getthema2round2());
                     request.setAttribute("next", 5);
-                    userantworten.clear();
                     if(session.getAttribute("done").equals("done")){
                         if(request.getParameterValues("answer") != null){
                             userantworten = StringArraytoArrayList(request.getParameterValues("answer"));
                         } else {
+                            userantworten.clear();
                             userantworten.add("null");
                         }
                         correctedAnswers = checkAnswers(userantworten, currentMultigame.getCorrectAnswers(questionID[0]));
@@ -435,11 +454,11 @@ int round;
                     request.setAttribute("question", currentMultigame.getQuestion(questionID[1]));
                     request.setAttribute("answers", currentMultigame.getAnswers(questionID[1]));
                     request.setAttribute("next", 6);
-                    userantworten.clear();
                     if(session.getAttribute("done").equals("done")){
                         if(request.getParameterValues("answer") != null){
                             userantworten = StringArraytoArrayList(request.getParameterValues("answer"));
                         } else {
+                            userantworten.clear();
                             userantworten.add("null");
                         }
                         correctedAnswers = checkAnswers(userantworten, currentMultigame.getCorrectAnswers(questionID[1]));
@@ -456,11 +475,11 @@ int round;
                     request.setAttribute("question", currentMultigame.getQuestion(questionID[2]));
                     request.setAttribute("answers", currentMultigame.getAnswers(questionID[2]));
                     request.setAttribute("next", 7);
-                    userantworten.clear();
                     if(session.getAttribute("done").equals("done")){
                         if(request.getParameterValues("answer") != null){
                             userantworten = StringArraytoArrayList(request.getParameterValues("answer"));
                         } else {
+                            userantworten.clear();
                             userantworten.add("null");
                         }
                         correctedAnswers = checkAnswers(userantworten, currentMultigame.getCorrectAnswers(questionID[2]));
@@ -478,11 +497,11 @@ int round;
                     request.setAttribute("answers", currentMultigame.getAnswers(questionID[0]));
                     session.setAttribute("currentThema", currentMultigame.getthema3round2());
                     request.setAttribute("next", 8);
-                    userantworten.clear();
                     if(session.getAttribute("done").equals("done")){
                         if(request.getParameterValues("answer") != null){
                             userantworten = StringArraytoArrayList(request.getParameterValues("answer"));
                         } else {
+                            userantworten.clear();
                             userantworten.add("null");
                         }
                         correctedAnswers = checkAnswers(userantworten, currentMultigame.getCorrectAnswers(questionID[0]));
@@ -499,11 +518,11 @@ int round;
                     request.setAttribute("question", currentMultigame.getQuestion(questionID[1]));
                     request.setAttribute("answers", currentMultigame.getAnswers(questionID[1]));
                     request.setAttribute("next", 9);
-                    userantworten.clear();
                     if(session.getAttribute("done").equals("done")){
                         if(request.getParameterValues("answer") != null){
                             userantworten = StringArraytoArrayList(request.getParameterValues("answer"));
                         } else {
+                            userantworten.clear();
                             userantworten.add("null");
                         }
                         correctedAnswers = checkAnswers(userantworten, currentMultigame.getCorrectAnswers(questionID[1]));
@@ -520,11 +539,11 @@ int round;
                     request.setAttribute("question", currentMultigame.getQuestion(questionID[2]));
                     request.setAttribute("answers", currentMultigame.getAnswers(questionID[2]));
                     request.setAttribute("next", 10);
-                    userantworten.clear();
                     if(session.getAttribute("done").equals("done")){
                         if(request.getParameterValues("answer") != null){
                             userantworten = StringArraytoArrayList(request.getParameterValues("answer"));
                         } else {
+                            userantworten.clear();
                             userantworten.add("null");
                         }
                         correctedAnswers = checkAnswers(userantworten, currentMultigame.getCorrectAnswers(questionID[2]));

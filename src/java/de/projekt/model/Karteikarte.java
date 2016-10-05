@@ -36,10 +36,12 @@ public class Karteikarte extends DatenbankZugang implements Werte {
     
     public String getPlaysetIDs(){
         String PlaysetIDs = "";
-        for(int i=0; i <= this.playset.size(); i++){
+        for(int i=0; i < this.playset.size(); i++){
             PlaysetIDs = this.playset.get(i).getId() + "-";
         }
         PlaysetIDs = PlaysetIDs.substring(0, PlaysetIDs.length()-1); //letztes Bindestrich entfernen
+        
+            System.out.print("PlaysetIDs:" + PlaysetIDs);
         return PlaysetIDs;
     }
     

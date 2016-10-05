@@ -7,7 +7,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" href="css/jquery.mobile-1.0.1.min.css" />
+        <link rel="stylesheet" href="css/jquery.mobile-1.4.5.min.css" />
         <link rel="stylesheet" href="css/design.css" type="text/css"/>
         <script src="js/jquery-1.11.1.min.js"></script>
         <script src="js/jquery.mobile-1.4.5.min.js"></script>
@@ -16,11 +16,11 @@
     <body>
         <div data-role="page">
              <div data-role="header" data-theme="b" id="header">            
-                <form action="LoginControllerServlet" method="post" class="ui-btn-left">
+                <form action="LoginControllerServlet" method="post" class="ui-btn-left" data-transition="slide" data-direction="reverse">
                     <button data-theme="a">Back</button>
                 </form>    
                 <h1>  L'Odyssee </h1>           
-                <form action="LogoutController" method="post" class="ui-btn-right">
+                <form action="LogoutController" method="post" class="ui-btn-right" data-transition="slide" data-direction="reverse">
                     <button data-theme="a">Logout</button>
                 </form>     
             </div>
@@ -46,19 +46,19 @@
  <!-- Ausgabe der verschiedenen Spielmodien -->    
      <div align="center"> 
             <a href="SpielModusServlet?category=3"> 
-                <img src="Bilder/Einzelspieler.jpg" alt="Einzelspieler" width="50%" height="50%" name="Einzelspieler"/>
+                <img src="images/Einzelspieler.jpg" alt="Einzelspieler" width="50%" height="50%" name="Einzelspieler"/>
             </a>
             
             <a href="SpielModusServlet?category=2"> 
-                <img src="Bilder/Mehrspieler.png" alt="Mehrspieler" width="50%" height="50%" name="Mehrspieler"/>
+                <img src="images/Mehrspieler.png" alt="Mehrspieler" width="50%" height="50%" name="Mehrspieler"/>
                 </a>
             
             <a href="RankingController"> 
-                <img src="Bilder/Ranking.png" alt="Ranking" width="50%" height="50%" name="Ranking"/>
+                <img src="images/Ranking.png" alt="Ranking" width="50%" height="50%" name="Ranking"/>
                 </a>
             
             <a href="StatistikController"> 
-                <img src="Bilder/Statistik.jpg" alt="Statistik" width="50%" height="50%" name="Statistik"/>
+                <img src="images/Statistik.jpg" alt="Statistik" width="50%" height="50%" name="Statistik"/>
                 </a>
      </div>
  

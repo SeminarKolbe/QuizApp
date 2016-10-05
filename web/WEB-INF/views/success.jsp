@@ -13,11 +13,11 @@
     </head>
     <body>
         <div data-role="header" data-theme="b" id="header">            
-            <form action="LoginControllerServlet" method="post" class="ui-btn-left">
+            <form action="LoginControllerServlet" method="post" class="ui-btn-left" data-transition="slide" data-direction="reverse">
                 <button data-theme="a">Back</button>
             </form>    
             <h1>  L'Odyssee </h1>           
-            <form action="LogoutController" method="post" class="ui-btn-right">
+            <form action="LogoutController" method="post" class="ui-btn-right" data-transition="slide" data-direction="reverse">
                 <button data-theme="a">Logout</button>
             </form>     
         </div>

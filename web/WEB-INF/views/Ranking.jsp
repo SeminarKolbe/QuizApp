@@ -12,13 +12,13 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" href="css/jquery.mobile-1.0.1.min.css" />
+        <link rel="stylesheet" href="css/jquery.mobile-1.4.5.min.css" />
         <link rel="stylesheet" href="css/design.css" />
         <title>Ranking</title>
     </head>
     <body>
        <div data-role="header" data-theme="b" id="header">            
-                <form action="LoginControllerServlet" method="post" class="ui-btn-left">
+                <form action="LoginControllerServlet" method="post" class="ui-btn-left" data-transition="slide" data-direction="reverse">
                     <button data-theme="a">Back</button>
                 </form>    
                 <h1>  L'Odyssee </h1>           

@@ -81,11 +81,12 @@ public class Multigame extends DatenbankZugang implements Werte{
         this.thema1round1 = chosenthema1;
         this.thema2round1 = chosenthema2;
         this.thema3round1 = chosenthema3;
-        this.cardset1round1 = new Karteikarte(chosenthema1, player2, "single").getPlaysetIDs();
-        this.cardset2round1 = new Karteikarte(chosenthema2, player2, "single").getPlaysetIDs();
-        this.cardset3round1 = new Karteikarte(chosenthema3, player2, "single").getPlaysetIDs();
+        this.cardset1round1 = new Karteikarte(chosenthema1, this.player2, "single").getPlaysetIDs();
+        this.cardset2round1 = new Karteikarte(chosenthema2, this.player2, "single").getPlaysetIDs();
+        this.cardset3round1 = new Karteikarte(chosenthema3, this.player2, "single").getPlaysetIDs();
+        System.out.println("hier bin ich bei MultigameRequest");
         this.round = 1;        
-        String query = "INSERT INTO multigame (player1, player2, thema1forplayer2, thema2forplayer2, thema3forplayer3, cardset1round1, cardset2round1, cardset3round1)"
+        String query = "INSERT INTO multigame (player1, player2, thema1round1, thema2round1, thema3round1, cardset1round1, cardset2round1, cardset3round1)"
                 + "VALUES (" + this.player1.getUser_id() + "," + this.player2.getUser_id() + ", '" + this.thema1round1 + "', '" + this.thema2round1
                 + "', '" + this.thema3round1 + "', '" + this.cardset1round1 + "', '" + this.cardset2round1 
                 + "', '" + this.cardset3round1 + "');";
@@ -102,7 +103,7 @@ public class Multigame extends DatenbankZugang implements Werte{
         this.cardset2round2 = new Karteikarte(chosenthema2, this.player1, "single").getPlaysetIDs();
         this.cardset3round2 = new Karteikarte(chosenthema3, this.player1, "single").getPlaysetIDs();
         this.round = 2;
-        String query = "UPDATE multigame SET thema1forplayer1 = '"+ this.thema1round2 + "', thema2forplayer1 = '" + this.thema2round2 + "', thema3forplayer1 = '" 
+        String query = "UPDATE multigame SET thema1round2 = '"+ this.thema1round2 + "', thema2round2 = '" + this.thema2round2 + "', thema3round2 = '" 
                 + this.thema3round2 + "', cardset1round2 = '" + this.cardset1round2 + "', cardset2round2 = '" + this.cardset2round2
                 + "', cardset3round2 = '" + this.cardset3round2 + "', round = " + this.round + " WHERE multigameID = " + this.multigameID + ";";
         System.out.println("query für setMultigameRespone: " + query);
@@ -309,7 +310,6 @@ public class Multigame extends DatenbankZugang implements Werte{
         int[] IDsIntArray = new int[playsetids.length];
         for(int i = 0; i < playsetids.length; i++){
             IDsIntArray[i] = Integer.parseInt(playsetids[i]);
-            System.out.println("IDsIntArray["+i+"]: " + IDsIntArray[i] + "\nplaysetids["+i+"]: " + playsetids[i]);
         }
         return IDsIntArray;
     }
