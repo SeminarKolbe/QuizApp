@@ -62,7 +62,6 @@ int round;
         Player currentPlayer = (Player) session.getAttribute("player");
         if(request.getParameter("id") != null) {        
             id = request.getParameter("id");
-            System.out.println("Hier bin ich id holen." + id);
         }
         else {
             themafrage = request.getParameter("themafrage");
@@ -79,7 +78,7 @@ int round;
                 Multigame currentMultigame = new Multigame(currentPlayer, request.getParameter("gegnerName"));
                 session.setAttribute("multigame", currentMultigame);
                 request.setAttribute("otherPlayerName", currentMultigame.getotherPlayerName(currentPlayer.getUser_id()));
-                session.setAttribute("round", 0);
+                session.setAttribute("round", 1);
                 System.out.println("MultiplayerController Anfragetyp Herausforderung gewählter Spieler erstellen: " + id + "\notherPlayername: " + currentMultigame.getotherPlayerName(currentPlayer.getUser_id()));
                 request.getRequestDispatcher("/WEB-INF/views/categoryMultiplayer.jsp").forward(request, response);
                 break;
@@ -90,7 +89,7 @@ int round;
                 System.out.println("MultiplayerController Anfragetyp Herausforderung an zufälligen Spieler: " + id);
                 session.setAttribute("multigame", currentMultigame);
                 request.setAttribute("otherPlayerName", otherPlayer);
-                session.setAttribute("round", 0);
+                session.setAttribute("round", 1);
                 request.getRequestDispatcher("/WEB-INF/views/categoryMultiplayer.jsp").forward(request, response);
                 break;
                 
@@ -100,17 +99,9 @@ int round;
                 currentMultigame = new Multigame(multigameID);
                 session.setAttribute("multigame", currentMultigame);
                 request.setAttribute("otherPlayerName", currentMultigame.getotherPlayerName(currentPlayer.getUser_id()));
-                cardset = currentMultigame.getcardset1round1();
-                questionID = currentMultigame.IDsStringtoIntArray(cardset);
-                request.setAttribute("question", currentMultigame.getQuestion(questionID[0]));
-                session.setAttribute("currentThema", currentMultigame.getthema1round1());
-                session.setAttribute("points", 0);
-                request.setAttribute("next", 2);
                 session.setAttribute("round", 1);
-                request.setAttribute("answers", currentMultigame.getAnswers(questionID[0]));
-                session.setAttribute("done", "not yet");
                 System.out.println("MultiplayerController Anfragetyp Herausforderung angenommen: " + id);
-                request.getRequestDispatcher("/WEB-INF/views/AusgabeMultiplayer.jsp").forward(request, response);
+                request.getRequestDispatcher("/WEB-INF/views/categoryMultiplayer.jsp").forward(request, response);
                 break;
                 
 /***************************************Runde 2 Spieler spielt 3 Themen des Gegners**********************************/                
@@ -136,21 +127,28 @@ int round;
         Multigame currentMultigame = (Multigame) session.getAttribute("multigame");
         System.out.println("MultiplayerController3 round:" + round);
 /***************************************Multigame befindet sich in der ersten Runde************************************/
-        if((int)session.getAttribute("round") == 0){
-            String[] chosenthemen = request.getParameterValues("category");
-            System.out.println("hier bin ich bei Controller vor MultigameRequest");
-            currentMultigame.setMultigameRequest(chosenthemen[0], chosenthemen[1], chosenthemen[2]);
-            cardset = currentMultigame.getcardset1round1();
-            questionID = currentMultigame.IDsStringtoIntArray(cardset);
-            request.setAttribute("question", currentMultigame.getQuestion(questionID[0]));
-            request.setAttribute("answers", currentMultigame.getAnswers(questionID[0]));
-            session.setAttribute("currentThema", currentMultigame.getthema1round1());
-            session.setAttribute("round", 1);
-            session.setAttribute("done", "not yet");
-            request.getRequestDispatcher("/WEB-INF/views/AusgabeMultiplayer.jsp").forward(request, response);
-        }
         if((int)session.getAttribute("round") == 1) {
             switch(themafrage) {
+                case "thema1frage0":
+                    String[] chosenthemen = request.getParameterValues("category");
+                    if(currentMultigame.getRound() == 1){
+                        currentMultigame.setMultigameResponse(chosenthemen[0], chosenthemen[1], chosenthemen[2]);
+                        System.out.println("MultiplayerController hier setze ich die MultigameResponse gewählte themen: " + chosenthemen[0] + chosenthemen[1] + chosenthemen[2] );
+                    }else{
+                        currentMultigame.setMultigameRequest(chosenthemen[0], chosenthemen[1], chosenthemen[2]);
+                    System.out.println("hier bin ich bei Controller vor MultigameRequest gewählte themen: " + chosenthemen[0] + chosenthemen[1] + chosenthemen[2]);
+                    }
+                    session.setAttribute("points", 0);
+                    cardset = currentMultigame.getcardset1round1();
+                    questionID = currentMultigame.IDsStringtoIntArray(cardset);
+                    request.setAttribute("question", currentMultigame.getQuestion(questionID[0]));
+                    request.setAttribute("answers", currentMultigame.getAnswers(questionID[0]));
+                    session.setAttribute("currentThema", currentMultigame.getthema1round1());
+                    request.setAttribute("next", 2);
+                    session.setAttribute("done", "not yet");
+                    request.getRequestDispatcher("/WEB-INF/views/AusgabeMultiplayer.jsp").forward(request, response);
+                    break;
+                    
                 case "thema1frage1":
                     cardset = currentMultigame.getcardset1round1();
                     questionID = currentMultigame.IDsStringtoIntArray(cardset);
@@ -347,18 +345,23 @@ int round;
                 
                 case "endround":
                     currentMultigame.setPointsforPlayer(currentPlayer, (int) session.getAttribute("points"));
-//Runde = 0 Spieleröffner hat gespielt, Runde = 1 Spielannehmer hat gespielt/kann gespielt werden
+                    System.out.println("pointsrunde2: " + (int) session.getAttribute("points"));
+                    System.out.println("MultiplayerController getRound(): " + currentMultigame.getRound());
+//Runde = 0 Spieleröffner hat gespielt, Runde = 1 Spielannehmer hat gespielt/kann gespielt werden. Abhängig von der Runde der in der DB gespeichert ist.
                     if(currentMultigame.getRound() == 1){
-                        currentMultigame.setRound(2);
+                        session.setAttribute("round", 2); //Weiter zur zweiten Runde
+                        request.setAttribute("thema1", currentMultigame.getthema1round2());
+                        request.setAttribute("thema2", currentMultigame.getthema2round2());
+                        request.setAttribute("thema3", currentMultigame.getthema3round2());
+                        request.getRequestDispatcher("/WEB-INF/views/WeiterleitungRunde2.jsp").forward(request, response);
                     }else {
                         currentMultigame.setRound(1);
+                        request.getRequestDispatcher("/WEB-INF/views/Spielmodiwahl.jsp").forward(request, response);
                     }
-                    System.out.println("pointsrunde2: " + (int) session.getAttribute("points"));
-                    request.getRequestDispatcher("/WEB-INF/views/Spielmodiwahl.jsp").forward(request, response);
                     break;
             }
         }
-        System.out.println("MultiplayerController4 runde 2");
+        System.out.println("MultiplayerController4 getRound(): \t" + currentMultigame.getRound());
 /***************************************Multigame befindet sich in der zweiten Runde************************************/
         if((int)session.getAttribute("round") == 2) {
             switch(themafrage) {
@@ -555,8 +558,12 @@ int round;
                     break;
                     
                 case "endround":
+                    if(currentMultigame.getRound() == 1){
+                        currentMultigame.setRound(2);
+                    } else{
+                        currentMultigame.setRound(3);
+                    }
                     currentMultigame.setPointsforPlayer(currentPlayer, (int) session.getAttribute("points"));
-                    currentMultigame.setRound(3);
                     request.getRequestDispatcher("/WEB-INF/views/Spielmodiwahl.jsp").forward(request, response);
                     break;
             }

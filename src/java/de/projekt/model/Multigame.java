@@ -11,9 +11,6 @@ import java.util.Random;
  *
  * @author Marin
  * 
- * Hauptproblem hier ist das zwei Benutzer auf diese Klasse zugreifen, d.h. sie benutzen nicht das gleiche Objekt!
- * mögliche Lösung ist der Zugriff auf die DB bei getter- und setter-Methoden. Ist gelöst, denn im Grunde nimmt nur die Klasse DatenbankZugang
- * eine Verbindung mit der DB auf und greift auf diese zu. In den getter- und setter-Methoden werden nur die SQL-Queries festgelegt.
  */
 public class Multigame extends DatenbankZugang implements Werte{
     private int multigameID;
@@ -84,14 +81,16 @@ public class Multigame extends DatenbankZugang implements Werte{
         this.cardset1round1 = new Karteikarte(chosenthema1, this.player2, "single").getPlaysetIDs();
         this.cardset2round1 = new Karteikarte(chosenthema2, this.player2, "single").getPlaysetIDs();
         this.cardset3round1 = new Karteikarte(chosenthema3, this.player2, "single").getPlaysetIDs();
-        System.out.println("hier bin ich bei MultigameRequest");
-        this.round = 1;        
-        String query = "INSERT INTO multigame (player1, player2, thema1round1, thema2round1, thema3round1, cardset1round1, cardset2round1, cardset3round1)"
+        this.round = 0;        
+        String query = "INSERT INTO multigame (player1, player2, thema1round1, thema2round1, thema3round1, cardset1round1, cardset2round1, cardset3round1, round)"
                 + "VALUES (" + this.player1.getUser_id() + "," + this.player2.getUser_id() + ", '" + this.thema1round1 + "', '" + this.thema2round1
                 + "', '" + this.thema3round1 + "', '" + this.cardset1round1 + "', '" + this.cardset2round1 
-                + "', '" + this.cardset3round1 + "');";
-        System.out.println("query für setMultigameRequest: "+ query);
+                + "', '" + this.cardset3round1 + "', 0);";
+        System.out.println("Multigame query für setMultigameRequest: "+ query);
         insertQuery(query);
+        query="SELECT multigameID FROM multigame WHERE player1=" + this.player1.getUser_id() + " AND player2=" + this.player2.getUser_id() + " AND round=0;";
+        setMultigameID(getInteger(query));
+        System.out.println("Multigame query für MultigameID setzen: " + query);
     }
     
     //Gegner wählt Kategorien für den Spieleröffner, diese werden hier in der DB gespeichert. Phase 2 abgeschlossen
@@ -102,7 +101,7 @@ public class Multigame extends DatenbankZugang implements Werte{
         this.cardset1round2 = new Karteikarte(chosenthema1, this.player1, "single").getPlaysetIDs();
         this.cardset2round2 = new Karteikarte(chosenthema2, this.player1, "single").getPlaysetIDs();
         this.cardset3round2 = new Karteikarte(chosenthema3, this.player1, "single").getPlaysetIDs();
-        this.round = 2;
+        this.round = 1;
         String query = "UPDATE multigame SET thema1round2 = '"+ this.thema1round2 + "', thema2round2 = '" + this.thema2round2 + "', thema3round2 = '" 
                 + this.thema3round2 + "', cardset1round2 = '" + this.cardset1round2 + "', cardset2round2 = '" + this.cardset2round2
                 + "', cardset3round2 = '" + this.cardset3round2 + "', round = " + this.round + " WHERE multigameID = " + this.multigameID + ";";
@@ -192,6 +191,7 @@ public class Multigame extends DatenbankZugang implements Werte{
         query = "UPDATE multigame SET round = " + Round + " WHERE multigameID = " + this.multigameID + ";";
         insertQuery(query);
         this.round = Round;
+        System.out.println("Multigame setRound query: " + query);
     }
     
     //Hole Frage zu einem Thema in einer Runde
@@ -217,16 +217,16 @@ public class Multigame extends DatenbankZugang implements Werte{
         return Answers;
     }
     
-    //Hole alle multigameIDs aus der DB für player1
+    //Hole alle multigameIDs aus der DB für player
     public ArrayList<Integer> getGameRequests(int playerid, int round) {
         String query = "";
         switch(round) {
             case 1:
-                query = "SELECT multigameID" + " FROM multigame WHERE player1 = " + playerid + " AND round = " + round + ";";
+                query = "SELECT multigameID FROM multigame WHERE player2 = " + playerid + " AND round = " + round + ";";
                 System.out.println("Multigame getAnfragen query: " + query);
                 return getIntegerList(query);
             case 2:
-                query = "SELECT multigameID" +" FROM multigame WHERE player2 = " + playerid + " AND round = " + round + ";";
+                query = "SELECT multigameID FROM multigame WHERE player1 = " + playerid + " AND round = " + round + ";";
                 System.out.println("Multigame getAnfragen query: " +query);
                 return getIntegerList(query);
             default: throw new IllegalArgumentException("Invalid argument at Multigame.getAnswers()");
@@ -273,7 +273,7 @@ public class Multigame extends DatenbankZugang implements Werte{
                 this.pointsforplayer2round1 = points;
             }
         }
-        System.out.println("setPointsforPlayer-query: " + query + "\npoints: " + points + "\nplayer.getUser_id(): " + player.getUser_id());
+        System.out.println("setPointsforPlayer-query: " + query + "\tpoints: " + points + "\tplayer.getUser_id(): " + player.getUser_id());
     }
     
     //Hole Punkte für Player 1 für das Multigame

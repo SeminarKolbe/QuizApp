@@ -90,21 +90,21 @@
 //                    });
                 </script>
                 <form action="MultiplayerController?themafrage=thema1frage0" method="post">
-                <div id="kategorieauswahl" style="text-align: center;">
-                    <ul data-role="listview" data-ajax="false" data-inset="true" data-theme="c" id="categories">
-                        <!-- KATEGORIEN WERDEN GELADEN -->    
-                    <% 
-                        Kategorie kategorien =  new Kategorie(); 
-                        ArrayList<String> kategoriethemen= kategorien.getKategorien(); // Guck auf der Datenbank, welche Kategorien hinterlegt sind
-                        for(int i = 0; i < kategoriethemen.size(); i++) {
-                            out.print("<li><input type=\"checkbox\" data-role=\"flipswitch\" value=\""+kategoriethemen.get(i)+"\" name=\"category\">"+kategoriethemen.get(i)+"</input></li>");
-                        }
-                    %>
-                    </ul> 
-                </div>
-                
-                <input type="submit" value="Themen abschicken" enabled/>
-                    </form>
+                    <div id="kategorieauswahl" style="text-align: center;">
+                        <ul data-role="listview" data-ajax="false" data-inset="true" data-theme="c" id="categories">
+                            <!-- KATEGORIEN WERDEN GELADEN -->    
+                        <% 
+                            Kategorie kategorien =  new Kategorie(); 
+                            ArrayList<String> kategoriethemen= kategorien.getKategorien(); // Guck auf der Datenbank, welche Kategorien hinterlegt sind
+                            for(int i = 0; i < kategoriethemen.size(); i++) {
+                                out.print("<li><input type=\"checkbox\" data-role=\"flipswitch\" value=\""+kategoriethemen.get(i)+"\" name=\"category\">"+kategoriethemen.get(i)+"</input></li>");
+                            }
+                        %>
+                        </ul> 
+                    </div>
+
+                    <input type="submit" value="Themen abschicken" enabled/>
+                </form>
                 
             </div>
                 <div data-role="footer" data-theme="c" id="footer"><h1></h1></div>

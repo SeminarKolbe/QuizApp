@@ -16,8 +16,8 @@
         <link rel="stylesheet" href="css/jquery.mobile-1.4.5.min.css" />
         <link rel="stylesheet" href="css/design.css" />
         <script src="js/jquery.mobile-1.4.5.min.js"></script>
-        <title>Multiplayer</title>
         <script src="js/jquery-1.12.4.min.js"></script>
+        <title>Multiplayer</title>
     </head>
     <%
         ArrayList<String> useranswers = new ArrayList<String>();
@@ -84,7 +84,7 @@
             }     
 
         //Gibt einen Hacken zurückfalls die richtige Antwort angekreuz wurde, oder keine falsche antwort. Sonst wird ein Kreuz ausgegeben
-            private String correct(ArrayList<Boolean> correct, int pos1){
+            private String markAnswers(ArrayList<Boolean> correct, int pos1){
                 if(correct.get(pos1)){
                     return "✔";
                 } else {
@@ -110,11 +110,11 @@
             </p>
             <form action="MultiplayerController?themafrage=<%out.println(nextFrage);%>" method="post" name="Answers">
                 
-                <input type="Checkbox" name="answer" value="a1"<%if(abgegeben!="not yet" && answerCheck(useranswers, "a1"))out.println(" checked=\"checked\"");%>><%out.println(answers.get(0));if(abgegeben!="not yet")out.println(correct(correctedAnswers, 0));%> <br>
-                <input type="Checkbox" name="answer" value="a2"<%if(abgegeben!="not yet" && answerCheck(useranswers, "a2"))out.println(" checked=\"checked\"");%>><%out.println(answers.get(1));if(abgegeben!="not yet")out.println(correct(correctedAnswers, 1));%> <br>
-                <input type="Checkbox" name="answer" value="a3"<%if(abgegeben!="not yet" && answerCheck(useranswers, "a3"))out.println(" checked=\"checked\"");%>><%out.println(answers.get(2));if(abgegeben!="not yet")out.println(correct(correctedAnswers, 2));%> <br>
-                <input type="Checkbox" name="answer" value="a4"<%if(abgegeben!="not yet" && answerCheck(useranswers, "a4"))out.println(" checked=\"checked\"");%>><%out.println(answers.get(3));if(abgegeben!="not yet")out.println(correct(correctedAnswers, 3));%> <br>
-                <input type="Checkbox" name="answer" value="a5"<%if(abgegeben!="not yet" && answerCheck(useranswers, "a5"))out.println(" checked=\"checked\"");%>><%out.println(answers.get(4));if(abgegeben!="not yet")out.println(correct(correctedAnswers, 4));%> <br>
+                <input type="Checkbox" name="answer" value="a1"<%if(abgegeben!="not yet" && answerCheck(useranswers, "a1"))out.println(" checked=\"checked\"");%>><%out.println(answers.get(0));if(abgegeben!="not yet")out.println(markAnswers(correctedAnswers, 0));%> <br>
+                <input type="Checkbox" name="answer" value="a2"<%if(abgegeben!="not yet" && answerCheck(useranswers, "a2"))out.println(" checked=\"checked\"");%>><%out.println(answers.get(1));if(abgegeben!="not yet")out.println(markAnswers(correctedAnswers, 1));%> <br>
+                <input type="Checkbox" name="answer" value="a3"<%if(abgegeben!="not yet" && answerCheck(useranswers, "a3"))out.println(" checked=\"checked\"");%>><%out.println(answers.get(2));if(abgegeben!="not yet")out.println(markAnswers(correctedAnswers, 2));%> <br>
+                <input type="Checkbox" name="answer" value="a4"<%if(abgegeben!="not yet" && answerCheck(useranswers, "a4"))out.println(" checked=\"checked\"");%>><%out.println(answers.get(3));if(abgegeben!="not yet")out.println(markAnswers(correctedAnswers, 3));%> <br>
+                <input type="Checkbox" name="answer" value="a5"<%if(abgegeben!="not yet" && answerCheck(useranswers, "a5"))out.println(" checked=\"checked\"");%>><%out.println(answers.get(4));if(abgegeben!="not yet")out.println(markAnswers(correctedAnswers, 4));%> <br>
              
                 <%if(abgegeben == "not yet") {
                     session.setAttribute("done", "done");
@@ -137,7 +137,7 @@
 
                 function initializeClock(id, endtime) {
                     var clock = document.getElementById(id);
-                    var secondsSpan = clock.querySelector('.seconds');
+                    var secondsSpan = $(".seconds");
 
                     function updateClock() {
                         var t = getTimeRemaining(endtime);
@@ -155,7 +155,7 @@
                 }
 
                 var deadline = new Date(Date.parse(new Date()) + 15 * 1000);
-                initializeClock('clockdiv', deadline);
+                initializeClock('#clockdiv', deadline);
             </script>
         <h3>Verbleibende Zeit</h3>
         <div id="clockdiv">
