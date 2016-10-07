@@ -3,7 +3,12 @@
     Created on : 26.09.2016, 10:49:02
     Author     : Jonas
 --%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="de.projekt.model.Kategorie"%>
 <%//@page import="de.projekt.model.DatenbankZugang"%>
+ <% @page import="de.projekt.model.Kategorie"%>
+
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -24,26 +29,27 @@
                 </form>     
             </div>
         
-        
-        
-        
-        <h1 id="haupt" style="text-align: center;">Multiplayer</h1>
-        <p style="text-align: center; font-family: calibri; font-size: 30px;"> Wähle 3 Kategorien aus</p>
-        
-        <table style="table-layout:fixed; margin-left:auto; margin-right:auto; border: 5px solid grey; ">
-            <tr style="height:120px;">
-                <td id="0" onclick="myFunction(this.id)"  style="text-align: center; border: 5px outset #dbdbdb; width:120px;"><b>Deutsch</b></td>
-                <td id="1" onclick="myFunction(this.id)" style="text-align: center; border: 5px outset #dbdbdb;width:120px;"><b>Sport</b></td>
-                <td id="2" onclick="myFunction(this.id)" style="text-align: center; border: 5px outset #dbdbdb;width:120px;"><b>Mathe</b></td>
+        <% 
+            Kategorie kategorien = new Kategorie();
+            ArrayList<String> themen = kategorien.getKategorien();
+            
+
+
+        %>
+            
+        <table>
+                <td id="0" value="<%=themen.get(0)%>" onclick="myFunction(this.id)" style="text-align: center; border: 5px outset #dbdbdb; width:120px;"><b><%themen.get(0);%></b></td>
+                <td id="1" value="<%=themen.get(1)%>"onclick="myFunction(this.id)" style="text-align: center; border: 5px outset #dbdbdb;width:120px;"><b><%themen.get(1);%></b></td>
+                <td id="2" value="<%=themen.get(2)%>"onclick="myFunction(this.id)" style="text-align: center; border: 5px outset #dbdbdb;width:120px;"><b><%themen.get(2);%></b></td>
             </tr>
             <tr style="height:120px;">
-                <td id="3"onclick="myFunction(this.id)" style="text-align: center; border: 5px outset #dbdbdb;width:120px;"><b>Geschichte</b></td>
-                <td id="4"onclick="myFunction(this.id)" style="text-align: center; border: 5px outset #dbdbdb;width:120px;"><b>Englisch</b></td>
-                <td id="5"onclick="myFunction(this.id)" style="text-align: center; border: 5px outset #dbdbdb;width:120px;"><b>Politik</b></td>
+                <td id="3" value="<%=themen.get(3)%>" onclick="myFunction(this.id)" style="text-align: center; border: 5px outset #dbdbdb;width:120px;"><b><%themen.get(3);%></b></td>
+                <td id="4" value="<%=themen.get(4)%>" onclick="myFunction(this.id)" style="text-align: center; border: 5px outset #dbdbdb;width:120px;"><b><%themen.get(4);%></b></td>
+                <td id="5" value="<%=themen.get(5)%>" onclick="myFunction(this.id)" style="text-align: center; border: 5px outset #dbdbdb;width:120px;"><b><%themen.get(5);%></b></td>
             </tr> 
         </table>
             
-           <button id="querybutton">Kategorien auswählen</button>
+            <button id="querybutton" action="">Kategorien auswählen</button>
             
             
             
@@ -59,10 +65,13 @@
                      document.getElementsByTagName('td')[clicked_id].style.backgroundColor='#e8e8e8';   
                 }
                
+                
+    
+    
                 //ändert den Rahmen der Kästchen und erzeugt somit ein Klick-Efferkt
                 function myFunction(clicked_id){              
                    var auslesen =  document.getElementsByTagName('td')[clicked_id].style.getPropertyValue("border-style"); // überprüft welcher Rand gesetzt ist inset oder outset
-                          
+                   var clicked
                         if(auslesen == "outset"){
                              if(clickedButton()<3){
                                 updateColorCaseClicked(clicked_id); 
@@ -81,7 +90,11 @@
                     if(clickedButton()==3){
                       
                      document.getElementById('querybutton').style.backgroundColor='yellow';
-  
+                     document.getElementById('querybutton').action='MultiplayerController?themafrage=thema1frage0';
+                     document.getElementById('querybutton').methode='post';
+                     auswahl = getClickedPosition()
+          
+                     document.setElementById('querybutton').value=auswahl;
                      
                     }
                     else{
@@ -101,6 +114,23 @@
                     
                     return clickedanzahl;
                 }
+                
+                function getThemaById(){
+                    
+                }
+                
+                
+                function getClickedPosition(){
+                    var clickedpositions =[];
+                    for(var i=0;i<document.getElementsByTagName('td').length;i++){
+                        help =  document.getElementsByTagName('td')[clicked_id].style.getPropertyValue("border-style");
+                        if(help == "inset"){
+                            clickedpositions.push(document.getElementsByTagName('td')[clicked_id].value); console.log(clickedpositions[0]);
+                        }
+                    }
+                    return clickedpositions;
+                }
+                
                 
             </script>   
                 <div data-role="footer" data-theme="c" id="footer" style="margin-top: 20px;"><h1></h1></div>
