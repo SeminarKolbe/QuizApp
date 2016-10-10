@@ -9,21 +9,28 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" href="css/jquery.mobile-1.4.5.min.css" />
+        <link rel="stylesheet" href="css/design.css" />
+        <script src="js/jquery-2.2.4.min.js"></script>
+        <script src="js/jquery.mobile-1.4.5.min.js"></script> 
         <title>Karteikarte gespeichert</title>
     </head>
     <body>
-        <div data-role="header" data-theme="b" id="header">            
-            <form action="LoginControllerServlet" method="post" class="ui-btn-left" data-transition="slide" data-direction="reverse">
-                <button data-theme="a">Back</button>
-            </form>    
-            <h1>  L'Odyssee </h1>           
-            <form action="LogoutController" method="post" class="ui-btn-right" data-transition="slide" data-direction="reverse">
-                <button data-theme="a">Logout</button>
-            </form>     
+  <!-- HEADER-->
+        <div data-role="header" data-theme="d" id="header" class="ui-header">
+            <div class="ui-alt-icon">
+            <a href="LoginControllerServlet" data-transition="slide" class="ui-btn-left ui-btn-corner-all ui-btn ui-icon-home ui-btn-icon-notext ui-shadow" data-direction="reverse" data-form="ui-icon" data-role="button"></a>
+            <h1 class="ui-title">  Quizmania </h1>
+            <a href="LogoutController" data-transition="slide" class="ui-btn-right ui-btn-corner-all ui-btn ui-icon-action ui-btn-icon-notext ui-shadow" data-direction="reverse" data-form="ui-icon" data-role="button"></a>  
+            </div>
         </div>
+    <!-- /HEADER-->
         
-        <h1>Karteikarte erfolgreich gespeichert MOTHAFUCKAA!</h1>
+        <h1>Karteikarte erfolgreich gespeichert</h1>
         
-        <div data-role="footer" data-theme="c" id="footer"><h1></h1></div>
+        <form action="CategoryController?category=NewNotecard" method="get" data-transition="slide">
+            <input type="submit" value="Weitere Karteikarte erstellen" />
+        </form>
+        <div data-role="footer" data-theme="d" id="footer"><h1></h1></div>
     </body>
 </html>

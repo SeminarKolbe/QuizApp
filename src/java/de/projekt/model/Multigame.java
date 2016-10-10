@@ -7,6 +7,7 @@ package de.projekt.model;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.List;
 /**
  *
  * @author Marin
@@ -33,39 +34,41 @@ public class Multigame extends DatenbankZugang implements Werte{
     private int pointsforplayer2round1;
     private int pointsforplayer1round2;
     private int pointsforplayer2round2;
+    private int winnerID;
     
     public Multigame() {
         
     }
     
+    //Ein multigame aus der DB holen anhand der multigameID
     public Multigame(int multigameid) throws SQLException {
         this.multigameID = multigameid;
         String query = "SELECT player1, player2, thema1round1, thema2round1, thema3round1, thema1round2, thema2round2, thema3round2,"
                 + "cardset1round1, cardset2round1, cardset3round1, cardset1round2, cardset2round2, cardset3round2,"
                 + " round, pointsforplayer1round1, pointsforplayer2round1, pointsforplayer1round2, pointsforplayer2round2 FROM multigame WHERE multigameID = " + multigameid + " AND NOT round = 3;";
-        ResultSet result = getResultSet(query);
-        while(result.next()){
-            this.player1 = new Player(result.getInt(1));
-            this.player2 = new Player(result.getInt(2));
-            this.thema1round1 = result.getString(3);
-            this.thema2round1 = result.getString(4);
-            this.thema3round1 = result.getString(5);
-            this.thema1round2 = result.getString(6);
-            this.thema2round2 = result.getString(7);
-            this.thema3round2 = result.getString(8);
-            this.cardset1round1 = result.getString(9);
-            this.cardset2round1 = result.getString(10);
-            this.cardset3round1 = result.getString(11);
-            this.cardset1round2 = result.getString(12);
-            this.cardset2round2 = result.getString(13);
-            this.cardset3round2 = result.getString(14);
-            this.round = result.getInt(15);
-            this.pointsforplayer1round1 = result.getInt(16);
-            this.pointsforplayer2round1 = result.getInt(17);
-            this.pointsforplayer1round2 = result.getInt(18);
-            this.pointsforplayer2round2 = result.getInt(19);
+        List<Object[]> ListResult = selectQuery(query);
+        Object[] result = ListResult.get(0);
+        if(result.length != 0){
+            this.player1 = new Player((int) result[0]);
+            this.player2 = new Player((int) result[1]);
+            this.thema1round1 = result[2].toString();
+            this.thema2round1 = result[3].toString();
+            this.thema3round1 = result[4].toString();
+            this.thema1round2 = result[5].toString();
+            this.thema2round2 = result[6].toString();
+            this.thema3round2 = result[7].toString();
+            this.cardset1round1 = result[8].toString();
+            this.cardset2round1 = result[9].toString();
+            this.cardset3round1 = result[10].toString();
+            this.cardset1round2 = result[11].toString();
+            this.cardset2round2 = result[12].toString();
+            this.cardset3round2 = result[13].toString();
+            this.round = (int) result[14];
+            this.pointsforplayer1round1 = (int) result[15];
+            this.pointsforplayer2round1 = (int) result[16];
+            this.pointsforplayer1round2 = (int) result[17];
+            this.pointsforplayer2round2 = (int) result[18];
         }
-        con.close();
     }
     
     public Multigame(Player player1, String player2Name) throws ClassNotFoundException, SQLException{
@@ -73,39 +76,36 @@ public class Multigame extends DatenbankZugang implements Werte{
         this.player2 = new Player(player2Name);
     }    
 
-    //Spieleröffner setzt ein Multigame auf mit Kategorien für Gegner, diese werden mit den Spielern in der DB gespeichert. Phase 1 abgeschlossen
+    //Spieleröffner erstellt ein Multigame mit Kategorien für Gegner, diese werden mit den Spielern in der DB gespeichert. 
     public void setMultigameRequest(String chosenthema1, String chosenthema2, String chosenthema3) throws ClassNotFoundException, SQLException {
         this.thema1round1 = chosenthema1;
         this.thema2round1 = chosenthema2;
         this.thema3round1 = chosenthema3;
-        this.cardset1round1 = new Karteikarte(chosenthema1, this.player2, "single").getPlaysetIDs();
-        this.cardset2round1 = new Karteikarte(chosenthema2, this.player2, "single").getPlaysetIDs();
-        this.cardset3round1 = new Karteikarte(chosenthema3, this.player2, "single").getPlaysetIDs();
-        this.round = 0;        
+        this.cardset1round1 = new Karteikarte(chosenthema1, this.player2, "multi").getPlaysetIDs(); //Karteikarten/Fragen werden ausgewählt, welche der Gegner oft falsch macht
+        this.cardset2round1 = new Karteikarte(chosenthema2, this.player2, "multi").getPlaysetIDs();
+        this.cardset3round1 = new Karteikarte(chosenthema3, this.player2, "multi").getPlaysetIDs();
+        this.round = 0;   //Multigame befindet sich im Anfangszustand, d.h. keine Punkte vergeben und keine Karten gespielt
         String query = "INSERT INTO multigame (player1, player2, thema1round1, thema2round1, thema3round1, cardset1round1, cardset2round1, cardset3round1, round)"
                 + "VALUES (" + this.player1.getUser_id() + "," + this.player2.getUser_id() + ", '" + this.thema1round1 + "', '" + this.thema2round1
                 + "', '" + this.thema3round1 + "', '" + this.cardset1round1 + "', '" + this.cardset2round1 
                 + "', '" + this.cardset3round1 + "', 0);";
-        System.out.println("Multigame query für setMultigameRequest: "+ query);
         insertQuery(query);
-        query="SELECT multigameID FROM multigame WHERE player1=" + this.player1.getUser_id() + " AND player2=" + this.player2.getUser_id() + " AND round=0;";
+        query = "SELECT multigameID FROM multigame WHERE player1=" + this.player1.getUser_id() + " AND player2=" + this.player2.getUser_id() + " AND round=0;";
         setMultigameID(getInteger(query));
-        System.out.println("Multigame query für MultigameID setzen: " + query);
     }
     
-    //Gegner wählt Kategorien für den Spieleröffner, diese werden hier in der DB gespeichert. Phase 2 abgeschlossen
+    //Gegner wählt Kategorien für den Spieleröffner, diese werden hier in der DB gespeichert. 
     public void setMultigameResponse(String chosenthema1, String chosenthema2, String chosenthema3)throws ClassNotFoundException, SQLException {
         this.thema1round2 = chosenthema1;
         this.thema2round2 = chosenthema2;
         this.thema3round2 = chosenthema3;
-        this.cardset1round2 = new Karteikarte(chosenthema1, this.player1, "single").getPlaysetIDs();
-        this.cardset2round2 = new Karteikarte(chosenthema2, this.player1, "single").getPlaysetIDs();
-        this.cardset3round2 = new Karteikarte(chosenthema3, this.player1, "single").getPlaysetIDs();
-        this.round = 1;
+        this.cardset1round2 = new Karteikarte(chosenthema1, this.player1, "multi").getPlaysetIDs(); //Karteikarten/Fragen werden ausgewählt, welche der Spieleröffner oft falsch macht
+        this.cardset2round2 = new Karteikarte(chosenthema2, this.player1, "multi").getPlaysetIDs();
+        this.cardset3round2 = new Karteikarte(chosenthema3, this.player1, "multi").getPlaysetIDs();
+        this.round = 1;   //Multigame befindet sich noch in der ersten Phase, d.h. Punkte für Player 1 sind gespeichert aber Player hat noch keine Punkte bzw. keine Karten der Runde 1 gespielt
         String query = "UPDATE multigame SET thema1round2 = '"+ this.thema1round2 + "', thema2round2 = '" + this.thema2round2 + "', thema3round2 = '" 
                 + this.thema3round2 + "', cardset1round2 = '" + this.cardset1round2 + "', cardset2round2 = '" + this.cardset2round2
                 + "', cardset3round2 = '" + this.cardset3round2 + "', round = " + this.round + " WHERE multigameID = " + this.multigameID + ";";
-        System.out.println("query für setMultigameRespone: " + query);
         insertQuery(query);
     }
     
@@ -130,7 +130,7 @@ public class Multigame extends DatenbankZugang implements Werte{
             return this.player2.getName();
         if(this.player2.getUser_id() == playerid)
             return this.player1.getName();
-        return "You´re no Player of this Multigame";
+        return "You´re not a Player of this Multigame";
     }
     
     public String getthema1round1(){
@@ -185,13 +185,37 @@ public class Multigame extends DatenbankZugang implements Werte{
         return this.round;
     }
     
+    //spiechert die erreichten Punkte für jede Runde abhängig vom Player sowohl im Objekt als auch in DB
+    public void setPointsPlayer1Round1(int points){
+        String query = "UPDATE multigame SET pointsforplayer1round1 = " + points + " WHERE multigameID = " + this.multigameID + ";";
+        insertQuery(query);
+        this.pointsforplayer1round1 = points;
+    }
+    
+    public void setPointsPlayer1Round2(int points){
+        String query = "UPDATE multigame SET pointsforplayer1round2 = " + points + " WHERE multigameID = " + this.multigameID + ";";
+        insertQuery(query);
+        this.pointsforplayer1round2 = points;
+    }
+    
+    public void setPointsPlayer2Round1(int points){
+        String query = "UPDATE multigame SET pointsforplayer2round1 = " + points + " WHERE multigameID = " + this.multigameID + ";";
+        insertQuery(query);
+        this.pointsforplayer2round1 = points;
+    }
+    
+    public void setPointsPlayer2Round2(int points){
+        String query = "UPDATE multigame SET pointsforplayer2round2 = " + points + " WHERE multigameID = " + this.multigameID + ";";
+        insertQuery(query);
+        this.pointsforplayer2round2 = points;
+    }
+    
     //setzt die übermittelte Runde in dem Objekt sowie DB fest
     public void setRound(int Round){
         String query = "";
         query = "UPDATE multigame SET round = " + Round + " WHERE multigameID = " + this.multigameID + ";";
         insertQuery(query);
         this.round = Round;
-        System.out.println("Multigame setRound query: " + query);
     }
     
     //Hole Frage zu einem Thema in einer Runde
@@ -205,15 +229,15 @@ public class Multigame extends DatenbankZugang implements Werte{
     public ArrayList<String> getAnswers(int questionID) throws SQLException, ClassNotFoundException {
         ArrayList<String> Answers = new ArrayList<String>();
         String query = "SELECT antwort1, antwort2, antwort3, antwort4, antwort5 FROM karten WHERE id_karte = " + questionID + ";";
-        ResultSet result = getResultSet(query);
-        if(result.next()){
-            Answers.add(result.getString(1));
-            Answers.add(result.getString(2));
-            Answers.add(result.getString(3));
-            Answers.add(result.getString(4));
-            Answers.add(result.getString(5));
+        List<Object[]> ListResult = selectQuery(query);
+        Object[] result = ListResult.get(0);
+        if(result.length != 0){
+            Answers.add(result[0].toString());
+            Answers.add(result[1].toString());
+            Answers.add(result[2].toString());
+            Answers.add(result[3].toString());
+            Answers.add(result[4].toString());
         }
-        con.close();
         return Answers;
     }
     
@@ -223,11 +247,9 @@ public class Multigame extends DatenbankZugang implements Werte{
         switch(round) {
             case 1:
                 query = "SELECT multigameID FROM multigame WHERE player2 = " + playerid + " AND round = " + round + ";";
-                System.out.println("Multigame getAnfragen query: " + query);
                 return getIntegerList(query);
             case 2:
                 query = "SELECT multigameID FROM multigame WHERE player1 = " + playerid + " AND round = " + round + ";";
-                System.out.println("Multigame getAnfragen query: " +query);
                 return getIntegerList(query);
             default: throw new IllegalArgumentException("Invalid argument at Multigame.getAnswers()");
         }
@@ -245,72 +267,105 @@ public class Multigame extends DatenbankZugang implements Werte{
     //Hole die richtige Antwort zur Frage eines Themas in einer Runde
     public int[] getCorrectAnswers(int questionID){
         String query = "SELECT richtigeAntworten FROM karten WHERE id_karte ="+ questionID + ";";
-        int[] CorrectAnswers = IDsStringtoIntArray(getString(query));
+        int[] CorrectAnswers = Helper.IDsStringtoIntArray(getString(query));
         return CorrectAnswers;
     }
     
-    //speichert die erreichten Punkte in der DB je nach Spieler
-    public void setPointsforPlayer(Player player, int points) {
-        String query = "";
-        if(this.player1.getUser_id() == player.getUser_id()){
-            if(this.round > 1){
-                query = "UPDATE multigame SET pointsforplayer1round2 = " + points + " WHERE multigameID = " + this.multigameID + ";";
-                insertQuery(query);
-                this.pointsforplayer1round2 = points;
-            } else {
-                query = "UPDATE multigame SET pointsforplayer1round1 = " + points + " WHERE multigameID = " + this.multigameID + ";";
-                insertQuery(query);
-                this.pointsforplayer1round1 = points;
-            }
-        } else if(this.player2.getUser_id() == player.getUser_id()){
-            if(this.round > 2){
-                query = "UPDATE multigame SET pointsforplayer2round2 = " + points + " WHERE multigameID = " + this.multigameID + ";";
-                insertQuery(query);
-                this.pointsforplayer2round2 = points;
-            } else {
-                query = "UPDATE multigame SET pointsforplayer2round1 = " + points + " WHERE multigameID = " + this.multigameID + ";";
-                insertQuery(query);
-                this.pointsforplayer2round1 = points;
-            }
-        }
-        System.out.println("setPointsforPlayer-query: " + query + "\tpoints: " + points + "\tplayer.getUser_id(): " + player.getUser_id());
-    }
-    
     //Hole Punkte für Player 1 für das Multigame
-    public int getPointsforPlayer1(){
-        String query = "";
-        if(this.round > 1){
-            query = "SELECT pointsforplayer1round2 FROM multigame WHERE player1 = " + this.player1.getUser_id() + " AND multigameID = " + this.multigameID + ";";
-            this.pointsforplayer1round2 = getInteger(query);
-            return this.pointsforplayer1round2;
-        } else{
-            query = "SELECT pointsforplayer1round1 FROM multigame WHERE player1 = " + this.player1.getUser_id() + " AND multigameID = " + this.multigameID + ";";
-            this.pointsforplayer1round1 = getInteger(query);
-            return this.pointsforplayer1round1;
-        }
+    public int getPointsPlayer1Round1(){
+        return this.pointsforplayer1round1;
     }
     
-    //Hole Punkte für Player 2 für das Multigame
-    public int getPointsforPlayer2(){
-        String query = "";
-        if(this.round > 1){
-            query = "SELECT pointsforplayer2round2 FROM multigame WHERE player1 = " + this.player2.getUser_id() + " AND multigameID = " + this.multigameID + ";";
-            this.pointsforplayer2round2 = getInteger(query);
-            return this.pointsforplayer2round2;
-        } else{
-            query = "SELECT pointsforplayer2round1 FROM multigame WHERE player1 = " + this.player2.getUser_id() + " AND multigameID = " + this.multigameID + ";";
-            this.pointsforplayer2round1 = getInteger(query);
-            return this.pointsforplayer2round1;
-        }
-    }     
+    public int getPointsPlayer1Round2(){
+        return this.pointsforplayer1round2;
+    }
     
-    //Hilfsmethode um einen String in einen Integer-Array umzuwandeln für Fragenset und richtige Antwort
-    public int[] IDsStringtoIntArray(String IDsString) {
-        String[] playsetids = IDsString.split("-");
-        int[] IDsIntArray = new int[playsetids.length];
-        for(int i = 0; i < playsetids.length; i++){
-            IDsIntArray[i] = Integer.parseInt(playsetids[i]);
+    //Hole Punkte für Player2 für das Multigame
+    public int getPointsPlayer2Round1(){
+        return this.pointsforplayer2round1;
+    }
+    
+    public int getPointsPlayer2Round2(){
+        return this.pointsforplayer2round2;
+    }
+    
+    /*
+    angekreuzte Antworten des Benutzers werden mit den richtigen Antworten in der DB verglichen:
+    richtige Antwort angekreuzt: true; falsche Antwort angekreuzt: false; richtige Antwort nicht angekreuzt: false; falsche Antwort nicht angekreuzt:true
+    */
+    public ArrayList<Boolean> checkAnswers(ArrayList<String> useranswers, int[] CorrectAnswer){
+        ArrayList<Boolean> correctedAnswers = new ArrayList<Boolean>();
+        for(int i = 0; i < 5; i++){
+            correctedAnswers.add(i, null);
         }
-        return IDsIntArray;
+        // Es wird geguckt, ob alle angekreuzten Antworten richtig sind 
+        if(!useranswers.get(0).equals("null")){
+            for(int f=0;f<useranswers.size();f++){
+                switch(useranswers.get(f)){ 
+                    case "a1": 
+                        if(CorrectAnswer[0] == 1) correctedAnswers.set(0, true);
+                        else if(CorrectAnswer[0] == 0) correctedAnswers.set(0, false);
+                        break;
+                    case "a2": 
+                        if(CorrectAnswer[1] == 1) correctedAnswers.set(1, true);
+                        else if(CorrectAnswer[1] == 0) correctedAnswers.set(1, false);
+                        break;
+                    case "a3": 
+                        if(CorrectAnswer[2] == 1) correctedAnswers.set(2, true);
+                        else if(CorrectAnswer[2] == 0) correctedAnswers.set(2, false);
+                        break;
+                    case "a4": 
+                        if(CorrectAnswer[3] == 1) correctedAnswers.set(3, true);
+                        else if(CorrectAnswer[3] == 0) correctedAnswers.set(3, false);
+                        break;
+                    case "a5": 
+                        if(CorrectAnswer[4] == 1) correctedAnswers.set(4, true);
+                        else if(CorrectAnswer[4] == 0) correctedAnswers.set(4, false);
+                        break;
+                }
+            }
+        }
+        //Überprüfung, ob alle nicht angekreuzten Antworten auch falsch sind. Ja: true  Nein: false
+        for(int f = 0; f < correctedAnswers.size(); f++){
+            if(correctedAnswers.get(f) == null && CorrectAnswer[f] == 0){
+                correctedAnswers.set(f, true);
+            } else if(correctedAnswers.get(f) == null && CorrectAnswer[f] == 1) {
+                correctedAnswers.set(f, false);
+            }
+        }
+        return correctedAnswers;
+    }
+    
+    //Antworten des Benutzers auswerten: richtige Antwort = 5 Punkte ; falsche Antwort = 0 Punkte
+    public int getAchievedPointsForThisQuestion(ArrayList<Boolean> correctedAnswers, int pointsBefore){
+        int pointsAfter = pointsBefore;
+        for(int i = 0; i < correctedAnswers.size(); i++){
+            if(correctedAnswers.get(i)){
+                pointsAfter += 5;
+            }
+        }
+        return pointsAfter;
+    }
+    
+    //Gewinner des Multigames speichern in DB und Objekt
+    public void setWinnerID(int WinnerID){
+        this.winnerID = WinnerID;
+        String query = "UPDATE multigame SET winnerID = " + WinnerID + " WHERE multigameID = " + this.multigameID + ";";
+        insertQuery(query);
+    }
+    
+    //Punkte für die Spieler auf der DB abspeichern
+    public void setPointsforPlayers(){
+        int winnerBonus = 100; //Bonus für Gewinner
+        if(this.winnerID == getPlayer1ID()){ // Gewinner Spieler 1
+            this.player1.setPointsforPlayer(getPointsPlayer1Round1()+getPointsPlayer1Round2()+winnerBonus);
+            this.player2.setPointsforPlayer(getPointsPlayer2Round1()+getPointsPlayer2Round2());
+        } else if(this.winnerID == getPlayer2ID()){ //Gewinner Spieler 2
+            this.player2.setPointsforPlayer(getPointsPlayer2Round1()+getPointsPlayer2Round2()+winnerBonus);
+            this.player1.setPointsforPlayer(getPointsPlayer1Round1()+getPointsPlayer1Round2());
+        } else{ //  unentschieden
+            this.player1.setPointsforPlayer(getPointsPlayer1Round1()+getPointsPlayer1Round2());
+            this.player2.setPointsforPlayer(getPointsPlayer2Round1()+getPointsPlayer2Round2());
+        }
     }
 }

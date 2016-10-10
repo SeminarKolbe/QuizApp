@@ -36,7 +36,7 @@ public class LogoutController extends HttpServlet {
             throws ServletException, IOException {
             try{
                
-                ControllerCategory.thema = null;  // muss auf null gesetzt werden, da sonst beim ControllerCategory ein Fehler auftritt
+                CategoryController.thema = null;  // muss auf null gesetzt werden, da sonst beim CategoryController ein Fehler auftritt
                 SingleplayerController.wrong=0;
                 SingleplayerController.right=0;
                 SingleplayerController.count=0;

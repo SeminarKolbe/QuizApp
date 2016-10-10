@@ -17,6 +17,7 @@ import java.util.List;
  */
 public class User extends DatenbankZugang {
     
+    //Hole UserID anhand des Namen
     public int getUserIDByName(String name) throws SQLException, ClassNotFoundException{
         int userID;
         String query = "SELECT id_benutzer FROM benutzer WHERE name = '" + name + "';";
@@ -24,6 +25,7 @@ public class User extends DatenbankZugang {
         return userID;
     }
     
+    //Hole Username anhand der ID
     public String getUserNameByID(int userID){
         String name = "";
         String query = "SELECT name FROM benutzer WHERE id_benutzer = " + userID + ";";
@@ -31,28 +33,18 @@ public class User extends DatenbankZugang {
         return name;
     }
     
-    //Gibt für ein Thema die gesamtzahl an Karten zurück, die der Spieler jemals gespeilt hat
-    public int getGespielteKarten(String thema, int id) throws ClassNotFoundException, SQLException{
-        int all=0;
-        connect();
-        Statement stmt= con.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT gespielt FROM relation_benutzer_karten WHERE thema='"+thema+"' AND id_benutzer='"+id+"';");
-        while(rs.next()){
-            all=all+rs.getInt("gespielt");    
-        }
-        con.close();
-     return all;
-    }
-    // Gibt die Anzahl an richtig gespielten Karten, die der Nutzer jemals zu einem Thema gespielt hat aus.
-    public int getRichtigGespielteKarten(String thema, int id) throws ClassNotFoundException, SQLException{
-        int right=0;
-        connect();
-        Statement stmt= con.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT richtig FROM relation_benutzer_karten WHERE thema='"+thema+"'AND id_benutzer='"+id+"';");
-        while(rs.next()){
-            right=right+rs.getInt("richtig");    
-        }
-         con.close();
-     return right;
+    // überprüft ob der User und Passwort in der Datenbank gespeichert sind
+    public boolean isUserValid(String username, String password) throws ClassNotFoundException, SQLException{
+        String querynames = "select name from benutzer;";
+        String querypasswords = "select passwort from benutzer;";
+        ArrayList<String> users = getStringList(querynames);
+        ArrayList<String> passwords =getStringList(querypasswords);
+        
+        for(int i =0; i<users.size();i++){
+            if(users.get(i).equals(username) && passwords.get(i).equals(password)){
+                return true;   
+            }   
+        }            
+        return false;
     }
 }

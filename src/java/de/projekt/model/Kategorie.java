@@ -14,17 +14,25 @@ import java.util.List;
  */
 public class Kategorie extends DatenbankZugang {
     
-    
-    public ArrayList<String> getKategorien(){
+    //Hole Name der Kategorien
+    public ArrayList<String> getNameKategorien(){
         String query = "SELECT name FROM thema;";
         ArrayList<String> kategorien = getStringList(query); 
         return kategorien; 
     }
     
+    //Hole IDs der Kategorien
      public ArrayList<Integer> getIdKategorien(){
         String query = "SELECT id_thema FROM thema;";
         ArrayList<Integer> idkategorien = getIntegerList(query); 
         return idkategorien; 
+    }
+    
+    //Hole Namen der vom Spieler gespielten Karten
+    public ArrayList<String> getNamesofplayedCategories(int playerid){
+        String query = "SELECT DISTINCT thema FROM relation_benutzer_karten WHERE id_benutzer = " + playerid + ";";
+        ArrayList<String> playedCategoryNames = getStringList(query);
+        return playedCategoryNames;
     }
     
 }

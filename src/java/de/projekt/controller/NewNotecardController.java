@@ -40,20 +40,15 @@ public class NewNotecardController extends HttpServlet {
         HttpSession session = request.getSession();
         Player player = (Player) session.getAttribute("player");
         String create = request.getParameter("create");
-        //Überprüfung der Parameter, sodass auch in allen Eingabefeldern etwas reingeschrieben wurde
+        //Bei RequesParameter "create" werden die nötigen Daten aus dem Request geholt und auf DB gespeichert. Gilt nur für SingleChoice-Fragen
         if(create.equals("true")){
-            if(!request.getParameter("thema").equals(null)){
-                if(!request.getParameter("question").equals(null)){
-                    if(!request.getParameterValues("correctAnswer").equals(null)){
-                        String thema = request.getParameter("thema");
-                        String question = request.getParameter("question");
-                        String correctAnswer = request.getParameter("correctAnswer");
-                        Karteikarte newNotecard = new Karteikarte();
-                        newNotecard.createNotecard(thema, question, correctAnswer, player.getUser_id());
-                        request.getRequestDispatcher("/WEB-INF/views/success.jsp").forward(request, response);
-                    }
-                }
-            }
+            String thema = request.getParameter("thema");
+            String question = request.getParameter("question");
+            String correctAnswer = request.getParameter("correctAnswer");
+            Karteikarte newNotecard = new Karteikarte();
+            newNotecard.createNotecard(thema, question, correctAnswer, player.getUser_id());
+            request.getRequestDispatcher("/WEB-INF/views/success.jsp").forward(request, response);
+
         } else request.getRequestDispatcher("/WEB-INF/views/error.jsp").forward(request, response);
     }
     

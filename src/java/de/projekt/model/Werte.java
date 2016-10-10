@@ -12,8 +12,8 @@ package de.projekt.model;
 public interface Werte {
     
     final int fragenanzahl = 3;        //Wie viele Fragen werden bei jedem Spiel gespielt
-    final int schwerefragen= 2;         // Wie viele Fragen sind davon Frage, die oft falsch gemacht werden (darf nicht größer als fragenanzal sein
-    final int altefragen = 1;           // wie viele Fragen von den schweren Fragen, sind fragen die beim letzten Spiel falsch beantwortet wurden
+    final int schwerefragen = 2;         // Wie viele Fragen sind davon Frage, die oft falsch gemacht werden (darf nicht größer als fragenanzal sein
+    final int eigenefragen = 1;         //wie viele selbst erstellte Fragen sollen gespielt werden 
     
-    final int anzahlmulticards =5;     // Ist die Anzahl wie viele Karten im Multiplayer gespielt werden
+    final int anzahlmulticards = 3;     // Ist die Anzahl wie viele Karten im Multiplayer gespielt werden
 }

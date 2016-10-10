@@ -44,6 +44,6 @@ public class ErrorHandler extends HttpServlet {
                 +  " has thrown an exception " + throwable.getClass().getName() 
                 + " : " + throwable.getMessage() + "\nStatuscode: " + statusCode 
                 + "\nAnfrage an URI:" + requestUri);
-        request.getRequestDispatcher("/error.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/views/error.jsp").forward(request, response);
     }
 }

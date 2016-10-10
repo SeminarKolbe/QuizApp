@@ -1,6 +1,6 @@
 <%-- 
     Document   : AusgabeSinglePlayer
-    Created on : 16.06.2016, 18:35:20
+    Created on : 27.07.2016, 18:35:20
     Author     : Jonas
 --%>
 
@@ -11,55 +11,54 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="css/design.css" />
         <link rel="stylesheet" href="css/jquery.mobile-1.4.5.min.css" />
-        <script src="js/jquery-1.7.1.min.js"></script>
+        <script src="js/jquery-2.2.4.min.js"></script>
         <script src="js/jquery.mobile-1.4.5.min.js"></script>
         <title>Singleplayer</title>
     </head>
     <body>
-            <div data-role="header" data-theme="b" id="header">            
-                <form action="LoginControllerServlet" method="post" class="ui-btn-left" data-transition="slide" data-direction="reverse">
-                    <button data-theme="a">Back</button>
-                </form>    
-                <h1>  L'Odyssee </h1>           
-                <form action="LogoutController" method="post" class="ui-btn-right" data-transition="slide" data-direction="reverse">
-                    <button data-theme="a">Logout</button>
-                </form>     
+  <!-- HEADER-->
+        <div data-role="header" data-theme="d" id="header" class="ui-header">
+            <div class="ui-alt-icon">
+            <a href="LoginControllerServlet" data-transition="slide" class="ui-btn-left ui-btn-corner-all ui-btn ui-icon-home ui-btn-icon-notext ui-shadow" data-direction="reverse" data-form="ui-icon" data-role="button"></a>
+            <h1 class="ui-title">  Quizmania </h1>
+            <a href="LogoutController" data-transition="slide" class="ui-btn-right ui-btn-corner-all ui-btn ui-icon-action ui-btn-icon-notext ui-shadow" data-direction="reverse" data-form="ui-icon" data-role="button"></a>  
             </div>
+        </div>
+    <!-- /HEADER-->
         
         
         
         <% 
             String question = (String)request.getAttribute("question");
             String answer = (String)request.getAttribute("answer");
-            
         %>
-         
+        
         <script>
-            function buttonAnswer(answer){
+            function alertAnswer(answer){
                 alert(answer);
             }
-        </script>    
+        </script>
+           
        <div data-role="content" style="margin:10px"> 
         <h2>Beantworte folgende Frage:</h2>
         <p align="center">
-            <img src="images/kartei.jpg">
             <b>
             <%out.println(question);%>
              </b>
 
         </p>
         
-                <button ONCLICK="buttonAnswer(<%out.println(answer);%>)">Antwort anzeigen</button>
-                <form action="SingleplayerController?id=1" method="post">
+        <button onclick="alertAnswer('<%=answer%>')" type="submit">Antwort anzeigen</button>
+                <form action="SingleplayerController?id=1" method="post" data-transition="slide">
                     <button>richtig</button>     
                 </form> 
-                <form action="SingleplayerController?id=0" method="post">
+                <form action="SingleplayerController?id=0" method="post" data-transition="slide">
                     <button>falsch</button>     
                 </form> 
        </div>        
                
                
                 
-                <div data-role="footer" data-theme="c" id="footer"><h1></h1></div>
+                <div data-role="footer" data-theme="d" id="footer"><h1></h1></div>
     </body>
 </html>

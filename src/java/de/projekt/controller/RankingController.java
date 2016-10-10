@@ -31,6 +31,7 @@ public class RankingController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
         request.getRequestDispatcher("/WEB-INF/views/Ranking.jsp").forward(request, response);
     }
 
@@ -46,7 +47,12 @@ public class RankingController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        
+        try{
+            processRequest(request, response);
+        }catch(Exception e){
+            System.out.println(e);
+        }
     }
 
     /**
@@ -60,7 +66,11 @@ public class RankingController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try{
+            processRequest(request, response);
+        }catch(Exception e){
+            System.out.println(e);
+        }
     }
 
     /**

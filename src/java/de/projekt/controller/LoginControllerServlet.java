@@ -7,9 +7,6 @@ package de.projekt.controller;
 import de.projekt.model.*;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -31,7 +28,7 @@ public class LoginControllerServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     //neue Instanz von der Klasse UserValidation
-    private UserValidation zugriff = new UserValidation();
+    private User zugriff = new User();
     private int aufruf=0;
     private String userName;
     private String password;
@@ -44,7 +41,7 @@ public class LoginControllerServlet extends HttpServlet {
         try{
             password= sessio.getAttribute("password").toString();
             userName= sessio.getAttribute("userName").toString();
-            ControllerCategory.thema = null;  // muss auf null gesetzt werden, da sonst beim ControllerCategory ein Fehler auftritt
+            CategoryController.thema = null;  // muss auf null gesetzt werden, da sonst beim CategoryController ein Fehler auftritt
             SingleplayerController.wrong=0;
             SingleplayerController.right=0;
             SingleplayerController.count=0;
@@ -59,20 +56,12 @@ public class LoginControllerServlet extends HttpServlet {
         if(isUserValid) {
             sessio.setAttribute("userName", this.userName);
             sessio.setAttribute("password", this.password);
-            //zugriff.close();
-            //________Login-Admin__________
-             if(userName.equals("admin")){  
-                    request.getRequestDispatcher("/WEB-INF/views/categoryAdmin.jsp").forward(request, response);
-                    return;
-             }else{
-                    Player player = new Player(userName); // in Player-Klasse soll die UserId für den userName zurückgegeben werden
+            Player player = new Player(userName); // in Player-Klasse soll die UserId für den userName zurückgegeben werden
              
-                    sessio.setAttribute("player", player); // und in der Session gespeichert werden
+            sessio.setAttribute("player", player); // und in der Session gespeichert werden
                     
-                    request.getRequestDispatcher("/WEB-INF/views/Spielmodiwahl.jsp").forward(request, response);
-                   // request.getRequestDispatcher("/WEB-INF/views/category.jsp").forward(request, response);
-                    return;
-            }
+            request.getRequestDispatcher("/WEB-INF/views/Spielmodiwahl.jsp").forward(request, response);
+            return;
         //____ Falls User nicht bekannt______     
         }else{
             
@@ -90,13 +79,6 @@ public class LoginControllerServlet extends HttpServlet {
     }
        
                 
-                
-   
-    
-    
-    
-    
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

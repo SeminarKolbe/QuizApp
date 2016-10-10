@@ -5,14 +5,11 @@
  */
 package de.projekt.controller;
 
-import de.projekt.model.DatenbankZugang;
-import de.projekt.model.Multi;
+import de.projekt.model.Kategorie;
 import de.projekt.model.Player;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.text.NumberFormat;
-import java.util.List;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -42,17 +39,16 @@ public class StatistikController extends HttpServlet {
             throws ServletException, IOException, ClassNotFoundException, SQLException {
        
         HttpSession session = request.getSession();
-        String username=(String) session.getAttribute("userName");
-        DatenbankZugang db =new DatenbankZugang();
-        Player player = new Player(username);
-        int userid= player.getIdPlayer();
+        Player currentPlayer = (Player) session.getAttribute("player");
+        int userid = currentPlayer.getUser_id();
+        ArrayList<String> themen = new Kategorie().getNamesofplayedCategories(userid);
         
-        List <String> list= db.getThemaAll();
-        for(String thema : list){
-            int gespielt= player.getGespielteKarten(thema,userid);
-            int richtig = db.getRichtigGespielteKarten(thema, userid);
-            int falsch =db.getFalschGespielteKarten(thema, userid);
-            double prozent=0;
+        //benötigte Werte aus der DB holen für Spieler + Errechnen der Statistiken
+        for(String thema : themen){
+            int gespielt= currentPlayer.getPlayedCardsByTheman(thema,userid);
+            int richtig = currentPlayer.getRightPlayedCardsByThema(thema, userid);
+            int falsch = currentPlayer.getWrongPlayedCardsByThema(thema, userid);
+            double prozent = 0;
             try{
                 prozent= ((double) richtig/gespielt);
                 prozent = prozent*10000;

@@ -7,7 +7,6 @@ package de.projekt.controller;
 
 import de.projekt.model.Karteikarte;
 import de.projekt.model.Player;
-import de.projekt.model.Multigame;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -23,8 +22,9 @@ import javax.servlet.http.HttpSession;
  *
  * @author Marin
  */
-@WebServlet(name = "ControllerCategory", urlPatterns = {"/ControllerCategory"})
-public class ControllerCategory extends HttpServlet {
+
+@WebServlet(name = "CategoryController", urlPatterns = {"/CategoryController"})
+public class CategoryController extends HttpServlet {
        public static String thema=null;
        Karteikarte single;
        public int setsize;
@@ -41,9 +41,8 @@ public class ControllerCategory extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         Player player=(Player) session.getAttribute("player");
-        System.out.println("Hier bin ich im ControllerCategory.");
+        //Karte erstellen oder Thema gewählt?
         if(request.getParameter("category").equals("NewNotecard")){
-            System.out.println("Hier wurde category NewNotecard ausgewählt.");
             request.getRequestDispatcher("/WEB-INF/views/NewNotecard.jsp").forward(request,response);
         }else{
             String thema = request.getParameter("category");
@@ -51,7 +50,6 @@ public class ControllerCategory extends HttpServlet {
             single = new Karteikarte(thema, player, "single");
             session.setAttribute("single", single);
             session.setAttribute("count", 0);
-            System.out.println("SingleplayerController question: " + single.getQuestion(0) + "\nVerarbeitungsCongrollerSingle correctanswer: " + single.getCorrectAnswer(0));
             request.setAttribute("answer",single.getCorrectAnswer(0));
             request.setAttribute("question",single.getQuestion(0));
             request.getRequestDispatcher("/WEB-INF/views/AusgabeSinglePlayer.jsp").forward(request, response);

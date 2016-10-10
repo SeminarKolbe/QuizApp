@@ -1,5 +1,4 @@
 <%@page import="de.projekt.model.Player"%>
-<%@page import="de.projekt.model.Multi"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -9,85 +8,55 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="css/jquery.mobile-1.4.5.min.css" />
         <link rel="stylesheet" href="css/design.css" type="text/css"/>
-        <script src="js/jquery-1.11.1.min.js"></script>
+        <script src="js/jquery-2.2.4.min.js"></script>
         <script src="js/jquery.mobile-1.4.5.min.js"></script>
         <title>Spielmodus</title>
     </head>
     <body>
         <div data-role="page">
-             <div data-role="header" data-theme="b" id="header">            
-                <form action="LoginControllerServlet" method="post" class="ui-btn-left" data-transition="slide" data-direction="reverse">
-                    <button data-theme="a">Back</button>
-                </form>    
-                <h1>  L'Odyssee </h1>           
-                <form action="LogoutController" method="post" class="ui-btn-right" data-transition="slide" data-direction="reverse">
-                    <button data-theme="a">Logout</button>
-                </form>     
+  <!-- HEADER-->
+        <div data-role="header" data-theme="d" id="header" class="ui-header">
+            <div class="ui-alt-icon">
+                <a href="LoginControllerServlet" data-transition="slide" class="ui-btn-left ui-btn-corner-all ui-btn ui-icon-home ui-btn-icon-notext ui-shadow" data-direction="reverse" data-form="ui-icon" data-role="button"></a>
+                <h1 class="ui-title">  Quizmania </h1>
+                <a href="LogoutController" data-transition="slide" class="ui-btn-right ui-btn-corner-all ui-btn ui-icon-action ui-btn-icon-notext ui-shadow" data-direction="reverse" data-form="ui-icon" data-role="button"></a>  
             </div>
+        </div>
+    <!-- /HEADER-->
+    
      <div data-role="content" align="center">
             <h2>Wähle deinen Spielmodus:</h2>
-            <% /* List<String> anfrage =new ArrayList<String>();
-                int [] anfrageid= new int[100];
-               
-                request.setAttribute("player",request.getParameter("player"));
-                Player ueber=((Player) session.getAttribute("player"));
-                Multi loeschen=new Multi(ueber);
-                
-                
-                try{
-                     anfrage = (List<String>)request.getAttribute("anfrage");
-                     anfrageid =(int[])request.getAttribute("anfrageid");
-                }catch(Exception e){
-                    System.out.println(e);
-                }    
-            */
-            %>
+
      </div>   
  <!-- Ausgabe der verschiedenen Spielmodien -->    
-     <div align="center"> 
-            <a href="SpielModusServlet?category=3"> 
-                <img src="images/Einzelspieler.jpg" alt="Einzelspieler" width="50%" height="50%" name="Einzelspieler"/>
+     <div class="ui-grid-a">
+         <div class="ui-block-a">
+            <a href="SpielModusServlet?category=3" data-transition="slide"> 
+                <img src="images/Einzelspieler.jpg" alt="Einzelspieler" name="Einzelspieler" height="100%" width="100%"/>
             </a>
-            
-            <a href="SpielModusServlet?category=2"> 
-                <img src="images/Mehrspieler.png" alt="Mehrspieler" width="50%" height="50%" name="Mehrspieler"/>
+         </div>
+         <div class="ui-block-b">
+            <a href="SpielModusServlet?category=2" data-transition="slide"> 
+                <img src="images/Mehrspieler.png" alt="Mehrspieler" name="Mehrspieler" class="img " height="120%" width="100%"/>
                 </a>
-            
-            <a href="RankingController"> 
-                <img src="images/Ranking.png" alt="Ranking" width="50%" height="50%" name="Ranking"/>
-                </a>
-            
-            <a href="StatistikController"> 
-                <img src="images/Statistik.jpg" alt="Statistik" width="50%" height="50%" name="Statistik"/>
-                </a>
+         </div>
      </div>
  
-<!-- Guckt ob die Ergebnisse eines Multiplayergames sichtbar sind -->
-        <div data-role="content" style="margin:10px">   
-            <% // Guckt ob eine eine Anfrage vom gegner fertig ist und gibt das ergebniss aus, gleichzeitig wird die ANfrage gelöscht
-                /*out.println("<form action=\"ErgebnisController\" method=\"post\"><label>Spieler(in):</label><select name=\"endauswahl\"size=\"1\">");
-                    for(int g=0;g<anfrageid.length;g++){
-                    if(loeschen.getErgebnisAll(anfrageid[g],ueber.getName())){
-                        out.println("<option value=\""+anfrageid[g]+"\">Ergebnis von Spiel: "+anfrageid[g]+" ansehen</option>");    
-                    }    
-                }
-                out.println(" </select><button>Ergebnis checken</button></form>");
-            */
-            %>
-            
-            
-            
-            <%  // Guck ob ein Gegner eine Anfrage gesendet hat
-                /*if(anfrage.size()>0){
-               
-               out.println("<form action=\"VerarbeitungsControllerMulti\" method=\"post\"><label>Spieler(in):</label><select name=\"top5\"size=\"1\">"); 
-               for(int i=0;i<anfrage.size();i++){
-                   out.println("<option value=\""+anfrageid[i]+"\">"+anfrage.get(i)+"</option>");
-               } 
-               out.println(" </select><button>Los geht's</button></form>");  
-            }*/%>
-     </div>
-            <div data-role="footer" data-theme="c" id="footer"><h1></h1></div>
+         <div class="ui-grid-a">
+             <div class="ui-block-a">  
+            <a href="RankingController" data-transition="slide"> 
+                <img src="images/Ranking.png" alt="Ranking" name="Ranking" height="100%" width="100%"/>
+                </a>
+             </div>
+             <div class="ui-block-b">
+            <a href="StatistikController" data-transition="slide"> 
+                <img src="images/Statistik.jpg" alt="Statistik" name="Statistik" height="100%" width="100%"/>
+                </a>
+             </div>
+         </div>
+ 
+
+            <div data-role="footer" data-theme="d" id="footer"><h1></h1></div>
         </div>
     </body>
 </html>

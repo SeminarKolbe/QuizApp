@@ -16,14 +16,5 @@
         <p style="color:red;">
             <c:out value = "${requestScope.error}"/>
         </p>
-           <!-- <h1>Fehler</h1>
-		<p>Beim Verarbeiten Ihrer Anfrage trat der folgende Fehler auf:</p>
-		<p style="color:red;">
-			<%-- Fehlermeldung ausgeben, die der Controller bereitgelegt hat: 
-			<c:out value="${requestScope.errorMessage}"/>--%>
-		</p>
-                <a href="LoginControllerServlet">
-                <input type="button" value="Zurück zur Auswahl"/>
-                </a>-->
     </body>
 </html>
